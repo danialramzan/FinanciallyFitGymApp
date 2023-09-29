@@ -23,5 +23,3 @@ This billing structure is suitable for anyone who like me, struggles to effectiv
 
 -  **As a user,  at the end of the month I want to receive a monthly bill that shows the total amount I owe based on my attendance records, making it easy to track my expenses.**
 
--  **As a user,  at the end of the month I want to receive a monthly bill that shows the total amount I owe based on my attendance records, making it easy to track my expenses.**
-
