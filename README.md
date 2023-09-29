@@ -21,5 +21,5 @@ This billing structure is suitable for anyone who like me, struggles to effectiv
     
 -  **As a user, I want to have the option to select and view my information and statistics since the start of the month until the current date out of a list of gym members e.g. amount due.** - viewing list of items
 
--  **As a user,  at the end of the month I want to receive a monthly bill that shows the total amount I owe based on my attendance records, making it easy to track my expenses.**
+-  **As a user, at the end of the month I want to receive a monthly bill that shows the total amount I owe based on my attendance records, making it easy to track my expenses.**
 
