@@ -4,7 +4,7 @@ import java.util.List;
 
 public class FinanciallyFitModel {
 
-    protected static double calculateMonthlyBillModel(List<GymMember> members, String billMemberName) {
+    private double calculateMonthlyBillModel(List<GymMember> members, String billMemberName) {
         GymMember billedMember = null;
 
         for (GymMember m : members) {
@@ -21,7 +21,7 @@ public class FinanciallyFitModel {
         }
     }
 
-    protected static GymMember findGymMember(List<GymMember> members, String memberName) {
+    private GymMember findGymMember(List<GymMember> members, String memberName) {
         GymMember foundMember = null;
         for (GymMember m : members) {
             if (m.getName().equals(memberName)) {
@@ -30,6 +30,17 @@ public class FinanciallyFitModel {
             }
         }
         return foundMember;
+    }
+
+
+    public double calculateMonthlyBillPublic(List<GymMember> members, String billMemberName) {
+        // This is a public method that acts as an interface to the private method.
+        return calculateMonthlyBillModel(members, billMemberName);
+    }
+
+    public GymMember findGymMemberPublic(List<GymMember> members, String memberName) {
+        // This is a public method that acts as an interface to the private method.
+        return findGymMember(members, memberName);
     }
 
 }

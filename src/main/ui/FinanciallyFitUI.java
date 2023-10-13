@@ -2,17 +2,18 @@ package ui;
 
 import model.FinanciallyFitModel;
 import model.GymMember;
-
 import java.util.*;
 
 
 /*
  * Represents the Gym Interface.
  */
-public class FinanciallyFitUI extends FinanciallyFitModel  {
-    public static void main(String[] args) {
-        List<GymMember> members = new ArrayList<>();
+public class FinanciallyFitUI  {
+    private GymMember gymMember;
+    private FinanciallyFitModel financiallyFitModel;
+    List<GymMember> members = new ArrayList<>();
 
+    public FinanciallyFitUI() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
             displayMenu();
@@ -40,7 +41,7 @@ public class FinanciallyFitUI extends FinanciallyFitModel  {
         }
     }
 
-    public static void displayMenu() {
+    public void displayMenu() {
         System.out.println("__________________________");
         System.out.println("~FinanciallyFit Terminal~");
         System.out.println("__________________________");
@@ -51,12 +52,12 @@ public class FinanciallyFitUI extends FinanciallyFitModel  {
         System.out.println("5. (e)xit");
     }
 
-    private static void exit() {
+    private void exit() {
         System.out.println("Exiting the FinanciallyFit terminal. Goodbye!");
         System.exit(0);
     }
 
-    private static void viewMembers(List<GymMember> members) {
+    private void viewMembers(List<GymMember> members) {
         if (members.isEmpty()) {
             System.out.println("No members are registered!");
         } else {
@@ -72,10 +73,10 @@ public class FinanciallyFitUI extends FinanciallyFitModel  {
     }
 
 
-    private static void calculateMonthlyBillUI(Scanner scanner, List<GymMember> members) {
+    private void calculateMonthlyBillUI(Scanner scanner, List<GymMember> members) {
         System.out.print("Enter member name: ");
         String billMemberName = scanner.nextLine();
-        double result = calculateMonthlyBillModel(members, billMemberName);
+        double result = financiallyFitModel.calculateMonthlyBillPublic(members, billMemberName);
         if (result != -1) {
             System.out.println("Monthly Bill for " + billMemberName + ": $" + result);
             System.out.println("Note that as you attend the gym more often your total amount due will go down");
@@ -93,13 +94,13 @@ public class FinanciallyFitUI extends FinanciallyFitModel  {
     // base membership cost, and an attendance log, (amongst another things)
     // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
     // !!! stated in the calling function (registerMember in FinanciallyFit)
-    private static void logMemberAttendance(Scanner scanner, List<GymMember> members) {
+    private void logMemberAttendance(Scanner scanner, List<GymMember> members) {
         System.out.print("Enter member name: ");
         String memberName = scanner.nextLine();
         System.out.println("Enter date to log attendance for member " + memberName + " (YYYY-mm-dd):");
         String logDate = scanner.nextLine();
 
-        GymMember foundMember = findGymMember(members, memberName);
+        GymMember foundMember = financiallyFitModel.findGymMemberPublic(members, memberName);
 
         if (foundMember != null) {
             System.out.print("Enter time spent at the gym (hours): ");
@@ -121,7 +122,7 @@ public class FinanciallyFitUI extends FinanciallyFitModel  {
     // base membership cost, and an attendance log, (amongst another things)
     // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
     // !!! stated in the calling function (registerMember in FinanciallyFit)
-    private static void registerMember(Scanner scanner, List<GymMember> members) {
+    private void registerMember(Scanner scanner, List<GymMember> members) {
         System.out.print("Enter member name: ");
         String name = scanner.nextLine();
         System.out.print("Enter date of registration (YYYY-mm-dd): ");
@@ -129,8 +130,9 @@ public class FinanciallyFitUI extends FinanciallyFitModel  {
         System.out.print("Enter number of days allowed missed: ");
         Integer allowedMiss = scanner.nextInt();
 
-        GymMember member = new GymMember(name, regDate, allowedMiss);
-        members.add(member);
+
+        GymMember gymMember = new GymMember(name, regDate, allowedMiss);
+        members.add(gymMember);
         System.out.println(name + " has been registered.");
     }
 

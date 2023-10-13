@@ -13,12 +13,14 @@ public class FinanciallyFitModelTest {
     private GymMember testGymMember;
     private GymMember testGymMember2;
     private ArrayList<GymMember> testList;
+    private FinanciallyFitModel financiallyFitModel;
 
     @BeforeEach
     void BeforeEach() {
         testList = new ArrayList<>();
         testGymMember = new GymMember("danial", "2023-01-31", 0);
         testGymMember2 = new GymMember("gregor", "2023-01-02", 0);
+        financiallyFitModel = new FinanciallyFitModel();
         testList.add(testGymMember);
         testList.add(testGymMember2);
 
@@ -26,21 +28,22 @@ public class FinanciallyFitModelTest {
 
     @Test
     void testReturnFeeNotInList() {
-        assertEquals(-1, FinanciallyFitModel.calculateMonthlyBillModel(testList, "biden"));
+        assertEquals(-1, financiallyFitModel.calculateMonthlyBillPublic(testList, "biden"));
     }
 
     @Test
     void testReturnFeeInList() {
-        assertEquals(16, FinanciallyFitModel.calculateMonthlyBillModel(testList, "danial"));
+        assertEquals(16,
+                financiallyFitModel.calculateMonthlyBillPublic(testList, "danial"));
     }
 
     @Test
     void testReturnMemberNotInList() {
-        assertNull(FinanciallyFitModel.findGymMember(testList, "biden"));
+        assertNull(financiallyFitModel.findGymMemberPublic(testList, "biden"));
     }
 
     @Test
     void testReturnMemberInList() {
-        assertEquals(testGymMember, FinanciallyFitModel.findGymMember(testList, "danial"));
+        assertEquals(testGymMember, financiallyFitModel.findGymMemberPublic(testList, "danial"));
     }
 }
