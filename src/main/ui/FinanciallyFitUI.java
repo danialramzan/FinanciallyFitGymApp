@@ -14,6 +14,7 @@ public class FinanciallyFitUI  {
     private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
     MembersManager membersManager = new MembersManager();
 
+
     public FinanciallyFitUI() {
         while (true) {
             Scanner scanner = new Scanner(System.in);

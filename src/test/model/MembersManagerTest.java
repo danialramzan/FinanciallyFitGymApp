@@ -44,8 +44,8 @@ public class MembersManagerTest {
     @Test
     void testReturnAttendanceDay() {
         List<String> testList2  = new ArrayList<>();
-        assertEquals(testList2, testMembersManager.returnAttendanceDay("2023-01-30"));
         testGymMember.logAttendance(3, "2023-01-31");
+        assertEquals(testList2, testMembersManager.returnAttendanceDay("2023-01-30"));
         testGymMember2.logAttendance(3, "2023-01-31");
         testList2.add("danial");
         testList2.add("gregor");
