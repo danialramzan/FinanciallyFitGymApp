@@ -2,13 +2,16 @@ package model;
 
 
 import org.junit.jupiter.api.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GymMemberTest {
 
     @BeforeEach
     void BeforeEach() {
-        GymMember testGymMember;
     }
 
     @Test
@@ -42,13 +45,19 @@ public class GymMemberTest {
     void testConstructorAttendanceMoreThanRequirement() {
         GymMember testGymMember = new GymMember("danial", "2020-02-29", 0);
         testGymMember.logAttendance(4.5, "2020-02-29");
+        Map<String, Double> testMap = new HashMap<>();
+        testMap.put("2020-02-29", 4.5);
+
         assertEquals(((testGymMember.getNumOfDaysLeftInMonth())
                         * testGymMember.getDailyFeeMultiplier())
                         + (testGymMember.getDailyPenalty() * ((testGymMember.getNumOfDaysLeftInMonth()
                         - testGymMember.getAttendanceCount())  - testGymMember.getAllowedMiss())),
                 testGymMember.getMonthlyBill());
+        assertEquals(testMap, testGymMember.getAttendanceLog());
 
 
     }
+
+
 
 }

@@ -1,10 +1,7 @@
 package model;
 
-import com.sun.jdi.Value;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MembersManager {
 
@@ -24,6 +21,10 @@ public class MembersManager {
 
     public void removeMember(GymMember member) {
         members.remove(member);
+    }
+
+    public int getSize() {
+        return members.size();
     }
 
     public List<String> returnAttendanceDay(String date) {
