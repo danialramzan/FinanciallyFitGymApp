@@ -61,7 +61,7 @@ public class GymMember {
 
     // EFFECTS: returns monthly bill of user by applying the missed day algorithm.
     public double getMonthlyBill() {
-        if (attendanceCount > (numOfDaysLeftInMonth - allowedMiss)) {
+        if (attendanceCount >= (numOfDaysLeftInMonth - allowedMiss)) {
             return baseMembershipCost;
         } else {
             return baseMembershipCost + (dailyPenalty * ((numOfDaysLeftInMonth - attendanceCount)  - allowedMiss));

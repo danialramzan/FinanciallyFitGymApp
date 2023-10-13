@@ -4,7 +4,7 @@ import java.util.List;
 
 public class FinanciallyFitModel {
 
-    protected static void calculateMonthlyBillModel(List<GymMember> members, String billMemberName) {
+    protected static double calculateMonthlyBillModel(List<GymMember> members, String billMemberName) {
         GymMember billedMember = null;
 
         for (GymMember m : members) {
@@ -15,11 +15,9 @@ public class FinanciallyFitModel {
         }
 
         if (billedMember != null) {
-            double monthlyBill = billedMember.getMonthlyBill();
-            System.out.println("Monthly Bill for " + billMemberName + ": $" + monthlyBill);
-            System.out.println("Note that as you attend the gym more often your total amount due will go down");
+            return billedMember.getMonthlyBill();
         } else {
-            System.out.println("Member not found.");
+            return -1;
         }
     }
 

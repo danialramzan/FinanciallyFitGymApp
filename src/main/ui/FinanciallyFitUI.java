@@ -75,8 +75,15 @@ public class FinanciallyFitUI extends FinanciallyFitModel  {
     private static void calculateMonthlyBillUI(Scanner scanner, List<GymMember> members) {
         System.out.print("Enter member name: ");
         String billMemberName = scanner.nextLine();
-        calculateMonthlyBillModel(members, billMemberName);
+        double result = calculateMonthlyBillModel(members, billMemberName);
+        if (result != -1) {
+            System.out.println("Monthly Bill for " + billMemberName + ": $" + result);
+            System.out.println("Note that as you attend the gym more often your total amount due will go down");
+        } else {
+            System.out.println("Member not found.");
+        }
     }
+
 
 
     // Constructs the GymMember Object
