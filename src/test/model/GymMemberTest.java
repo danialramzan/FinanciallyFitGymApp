@@ -4,7 +4,7 @@ package model;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class testGymMember {
+public class GymMemberTest {
 
     @BeforeEach
     void BeforeEach() {
@@ -19,6 +19,8 @@ public class testGymMember {
                 + (testGymMember.getDailyPenalty() * ((testGymMember.getNumOfDaysLeftInMonth()
                 - testGymMember.getAttendanceCount())  - testGymMember.getAllowedMiss())),
                 testGymMember.getMonthlyBill());
+
+
     }
 
 
