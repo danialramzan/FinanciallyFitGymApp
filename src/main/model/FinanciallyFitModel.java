@@ -2,6 +2,9 @@ package model;
 
 import java.util.List;
 
+/*
+ * Represents the Utility Code for FinanciallyFitUI
+ */
 public class FinanciallyFitModel {
 
     // Constructs a FinanciallyFitModel object.
