@@ -47,6 +47,7 @@ public class GymMember {
     // REQUIRES: - logDate should be in format YYYY-MM-DD
     //           - logDate should be on, or after regDate
     //           - logDate should be in the same month and year as regDate
+    //           =  hours >= 0
     // MODIFIES: this
     // EFFECTS: logs the attendance of the user for a date
     // - If the date is already populated, it is replaced by the new entry

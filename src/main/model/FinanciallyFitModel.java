@@ -35,7 +35,7 @@ public class FinanciallyFitModel {
     private GymMember findGymMember(List<GymMember> members, String memberName) {
         GymMember foundMember = null;
         for (GymMember m : members) {
-            if (m.getName().equals(memberName)) {
+            if (m.getName().equalsIgnoreCase(memberName)) {
                 foundMember = m;
                 break;
             }
