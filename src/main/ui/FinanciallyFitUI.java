@@ -2,6 +2,8 @@ package ui;
 
 import model.FinanciallyFitModel;
 import model.GymMember;
+import model.MembersManager;
+
 import java.util.*;
 
 
@@ -9,9 +11,8 @@ import java.util.*;
  * Represents the Gym Interface.
  */
 public class FinanciallyFitUI  {
-    private GymMember gymMember;
-    private FinanciallyFitModel financiallyFitModel;
-    List<GymMember> members = new ArrayList<>();
+    private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
+    MembersManager membersManager = new MembersManager();
 
     public FinanciallyFitUI() {
         while (true) {
@@ -21,20 +22,25 @@ public class FinanciallyFitUI  {
             String choice = scanner.nextLine();
 
             if (choice.equals("1") || choice.equals("r")) {
-                registerMember(scanner, members);
+                registerMember(scanner);
 
-            } else if (choice.equals("2") || choice.equals("l")) {
-                logMemberAttendance(scanner, members);
+            } else if (choice.equals("2") || choice.equals("d")) {
+                deregisterMember(scanner);
 
-            } else if (choice.equals("3") || choice.equals("c")) {
-                calculateMonthlyBillUI(scanner, members);
+            } else if (choice.equals("3") || choice.equals("l")) {
+                logMemberAttendance(scanner);
 
-            } else if (choice.equals("4") || choice.equals("v")) {
-                viewMembers(members);
+            } else if (choice.equals("4") || choice.equals("c")) {
+                calculateMonthlyBillUI(scanner);
 
-            } else if (choice.equals("5") || choice.equals("e")) {
+            } else if (choice.equals("5") || choice.equals("v")) {
+                viewMembers();
+
+            } else if (choice.equals("6") || choice.equals("a")) {
+                attendanceChecker(scanner);
+
+            } else if (choice.equals("7") || choice.equals("e")) {
                 exit();
-
             } else {
                 System.out.println("Invalid choice. Please try again.");
             }
@@ -46,10 +52,12 @@ public class FinanciallyFitUI  {
         System.out.println("~FinanciallyFit Terminal~");
         System.out.println("__________________________");
         System.out.println("1. (r)egister member");
-        System.out.println("2. (l)og member attendance");
-        System.out.println("3. (c)alculate monthly bill");
-        System.out.println("4. (v)iew members");
-        System.out.println("5. (e)xit");
+        System.out.println("2. (d)eregister member");
+        System.out.println("3. (l)og member attendance");
+        System.out.println("4. (c)alculate monthly bill");
+        System.out.println("5. (v)iew members");
+        System.out.println("6. (a)ttendace of members for day");
+        System.out.println("7. (e)xit");
     }
 
     private void exit() {
@@ -57,13 +65,25 @@ public class FinanciallyFitUI  {
         System.exit(0);
     }
 
-    private void viewMembers(List<GymMember> members) {
-        if (members.isEmpty()) {
+    private void attendanceChecker(Scanner scanner) {
+
+        System.out.print("Enter date to check attendance for (YYYY-MM-DD): ");
+        String date = scanner.nextLine();
+        if (membersManager.returnAttendanceDay(date).isEmpty()) {
+            System.out.println("Nobody attended that day :(");
+        } else {
+            System.out.println("List of people who attended that day: " + membersManager.returnAttendanceDay(date));
+        }
+    }
+
+    private void viewMembers() {
+
+        if (membersManager.getMembers().isEmpty()) {
             System.out.println("No members are registered!");
         } else {
             System.out.println("_______________________________________________________________________");
             System.out.println("Member Name     Registration Date    Total Hours    Days Attended");
-            for (GymMember m : members) {
+            for (GymMember m : membersManager.getMembers()) {
                 System.out.println(m.getName() + "       " + m.getRegDate() + "                  "
                         + m.getTotalHours() + "           " + m.getAttendanceCount() + "/"
                         + m.getNumOfDaysLeftInMonth());
@@ -73,10 +93,10 @@ public class FinanciallyFitUI  {
     }
 
 
-    private void calculateMonthlyBillUI(Scanner scanner, List<GymMember> members) {
+    private void calculateMonthlyBillUI(Scanner scanner) {
         System.out.print("Enter member name: ");
         String billMemberName = scanner.nextLine();
-        double result = financiallyFitModel.calculateMonthlyBillPublic(members, billMemberName);
+        double result = financiallyFitModel.calculateMonthlyBillPublic(membersManager.getMembers(), billMemberName);
         if (result != -1) {
             System.out.println("Monthly Bill for " + billMemberName + ": $" + result);
             System.out.println("Note that as you attend the gym more often your total amount due will go down");
@@ -94,13 +114,13 @@ public class FinanciallyFitUI  {
     // base membership cost, and an attendance log, (amongst another things)
     // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
     // !!! stated in the calling function (registerMember in FinanciallyFit)
-    private void logMemberAttendance(Scanner scanner, List<GymMember> members) {
+    private void logMemberAttendance(Scanner scanner) {
         System.out.print("Enter member name: ");
         String memberName = scanner.nextLine();
         System.out.println("Enter date to log attendance for member " + memberName + " (YYYY-mm-dd):");
         String logDate = scanner.nextLine();
 
-        GymMember foundMember = financiallyFitModel.findGymMemberPublic(members, memberName);
+        GymMember foundMember = financiallyFitModel.findGymMemberPublic(membersManager.getMembers(), memberName);
 
         if (foundMember != null) {
             System.out.print("Enter time spent at the gym (hours): ");
@@ -113,8 +133,6 @@ public class FinanciallyFitUI  {
     }
 
 
-
-
     // Constructs the GymMember Object
     // REQUIRES: this
     // MODIFIES: this
@@ -122,7 +140,7 @@ public class FinanciallyFitUI  {
     // base membership cost, and an attendance log, (amongst another things)
     // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
     // !!! stated in the calling function (registerMember in FinanciallyFit)
-    private void registerMember(Scanner scanner, List<GymMember> members) {
+    private void registerMember(Scanner scanner) {
         System.out.print("Enter member name: ");
         String name = scanner.nextLine();
         System.out.print("Enter date of registration (YYYY-mm-dd): ");
@@ -132,8 +150,23 @@ public class FinanciallyFitUI  {
 
 
         GymMember gymMember = new GymMember(name, regDate, allowedMiss);
-        members.add(gymMember);
+        membersManager.addMember(gymMember);
         System.out.println(name + " has been registered.");
+    }
+
+
+    private void deregisterMember(Scanner scanner) {
+        System.out.print("Enter member name: ");
+        String name = scanner.nextLine();
+        GymMember foundMember = financiallyFitModel.findGymMemberPublic(membersManager.getMembers(), name);
+
+        if (foundMember != null) {
+            membersManager.removeMember(foundMember);
+            System.out.println(name + " has been deregistered.");
+        } else {
+            System.out.println("Member not found.");
+        }
+
     }
 
 }

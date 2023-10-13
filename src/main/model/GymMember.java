@@ -118,5 +118,10 @@ public class GymMember {
         return DAILY_PENALTY;
     }
 
+    // EFFECTS: returns attendance hashmap
+    public Map<String, Double> getAttendanceLog() {
+        return attendanceLog;
+    }
+
 }
 
