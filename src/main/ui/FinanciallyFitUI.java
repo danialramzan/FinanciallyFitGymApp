@@ -1,5 +1,6 @@
 package ui;
 
+import model.FinanciallyFitModel;
 import model.GymMember;
 
 import java.util.*;
@@ -8,16 +9,15 @@ import java.util.*;
 /*
  * Represents the Gym Interface.
  */
-public class FinanciallyFitUI {
+public class FinanciallyFitUI extends FinanciallyFitModel  {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         List<GymMember> members = new ArrayList<>();
-        boolean running = true;
 
-        while (running) {
+        while (true) {
+            Scanner scanner = new Scanner(System.in);
             displayMenu();
-            System.out.println("Please enter your choice: ");
-            String choice = scanner.next();
+            System.out.print("Please enter your choice: ");
+            String choice = scanner.nextLine();
 
             if (choice.equals("1") || choice.equals("r")) {
                 registerMember(scanner, members);
@@ -26,13 +26,13 @@ public class FinanciallyFitUI {
                 logMemberAttendance(scanner, members);
 
             } else if (choice.equals("3") || choice.equals("c")) {
-                calculateMonthlyBill(scanner, members);
+                calculateMonthlyBillUI(scanner, members);
 
             } else if (choice.equals("4") || choice.equals("v")) {
                 viewMembers(members);
 
             } else if (choice.equals("5") || choice.equals("e")) {
-                running = exit();
+                exit();
 
             } else {
                 System.out.println("Invalid choice. Please try again.");
@@ -51,10 +51,9 @@ public class FinanciallyFitUI {
         System.out.println("5. (e)xit");
     }
 
-    private static boolean exit() {
+    private static void exit() {
         System.out.println("Exiting the FinanciallyFit terminal. Goodbye!");
         System.exit(0);
-        return false;
     }
 
     private static void viewMembers(List<GymMember> members) {
@@ -73,25 +72,10 @@ public class FinanciallyFitUI {
     }
 
 
-    private static void calculateMonthlyBill(Scanner scanner, List<GymMember> members) {
+    private static void calculateMonthlyBillUI(Scanner scanner, List<GymMember> members) {
         System.out.print("Enter member name: ");
         String billMemberName = scanner.nextLine();
-        GymMember billedMember = null;
-
-        for (GymMember m : members) {
-            if (m.getName().equalsIgnoreCase(billMemberName)) {
-                billedMember = m;
-                break;
-            }
-        }
-
-        if (billedMember != null) {
-            double monthlyBill = billedMember.getMonthlyBill();
-            System.out.println("Monthly Bill for " + billMemberName + ": $" + monthlyBill);
-            System.out.println("Note that as you attend the gym more often your total amount due will go down");
-        } else {
-            System.out.println("Member not found.");
-        }
+        calculateMonthlyBillModel(members, billMemberName);
     }
 
 
@@ -108,13 +92,7 @@ public class FinanciallyFitUI {
         System.out.println("Enter date to log attendance for member " + memberName + " (YYYY-mm-dd):");
         String logDate = scanner.nextLine();
 
-        GymMember foundMember = null;
-        for (GymMember m : members) {
-            if (m.getName().equals(memberName)) {
-                foundMember = m;
-                break;
-            }
-        }
+        GymMember foundMember = findGymMember(members, memberName);
 
         if (foundMember != null) {
             System.out.print("Enter time spent at the gym (hours): ");
