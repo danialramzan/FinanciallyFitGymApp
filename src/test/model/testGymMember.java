@@ -17,7 +17,8 @@ public class testGymMember {
         assertEquals(((testGymMember.getNumOfDaysLeftInMonth())
                 * testGymMember.getDailyFeeMultiplier())
                 + (testGymMember.getDailyPenalty() * ((testGymMember.getNumOfDaysLeftInMonth()
-                - testGymMember.getAttendanceCount())  - testGymMember.getAllowedMiss())), testGymMember.getMonthlyBill());
+                - testGymMember.getAttendanceCount())  - testGymMember.getAllowedMiss())),
+                testGymMember.getMonthlyBill());
     }
 
 
