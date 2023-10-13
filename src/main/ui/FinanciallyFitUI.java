@@ -72,6 +72,7 @@ public class FinanciallyFitUI {
         }
     }
 
+
     private static void calculateMonthlyBill(Scanner scanner, List<GymMember> members) {
         System.out.print("Enter member name: ");
         String billMemberName = scanner.nextLine();

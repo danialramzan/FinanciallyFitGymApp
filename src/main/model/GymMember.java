@@ -20,6 +20,7 @@ public class GymMember {
     private static final int DAILY_PENALTY = 15;
 
 
+
     // Constructs the GymMember Object
     // MODIFIES: this
     // EFFECTS: creates a GymMember with a username, allowed missed days,
