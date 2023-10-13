@@ -34,12 +34,10 @@ public class FinanciallyFitModel {
 
 
     public double calculateMonthlyBillPublic(List<GymMember> members, String billMemberName) {
-        // This is a public method that acts as an interface to the private method.
         return calculateMonthlyBillModel(members, billMemberName);
     }
 
     public GymMember findGymMemberPublic(List<GymMember> members, String memberName) {
-        // This is a public method that acts as an interface to the private method.
         return findGymMember(members, memberName);
     }
 
