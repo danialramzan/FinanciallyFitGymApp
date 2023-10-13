@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class FinanciallyFitModelTest {
 
@@ -24,12 +25,22 @@ public class FinanciallyFitModelTest {
     }
 
     @Test
-    void testNotInList() {
+    void testReturnFeeNotInList() {
         assertEquals(-1, FinanciallyFitModel.calculateMonthlyBillModel(testList, "biden"));
     }
 
     @Test
-    void testInList() {
+    void testReturnFeeInList() {
         assertEquals(16, FinanciallyFitModel.calculateMonthlyBillModel(testList, "danial"));
+    }
+
+    @Test
+    void testReturnMemberNotInList() {
+        assertNull(FinanciallyFitModel.findGymMember(testList, "biden"));
+    }
+
+    @Test
+    void testReturnMemberInList() {
+        assertEquals(testGymMember, FinanciallyFitModel.findGymMember(testList, "danial"));
     }
 }
