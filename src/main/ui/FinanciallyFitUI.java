@@ -11,10 +11,11 @@ import java.util.*;
  * Represents the Gym Interface.
  */
 public class FinanciallyFitUI  {
+
     private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
-    MembersManager membersManager = new MembersManager();
+    private MembersManager membersManager = new MembersManager();
 
-
+    // EFFECTS: Starts the User Interface
     public FinanciallyFitUI() {
         while (true) {
             Scanner scanner = new Scanner(System.in);
@@ -42,12 +43,14 @@ public class FinanciallyFitUI  {
 
             } else if (choice.equals("7") || choice.equals("e")) {
                 exit();
+
             } else {
                 System.out.println("Invalid choice. Please try again.");
             }
         }
     }
 
+    // EFFECTS: Displays the Menu
     public void displayMenu() {
         System.out.println("__________________________");
         System.out.println("~FinanciallyFit Terminal~");
@@ -61,13 +64,14 @@ public class FinanciallyFitUI  {
         System.out.println("7. (e)xit");
     }
 
+    // EFFECTS: Exits the Program
     private void exit() {
         System.out.println("Exiting the FinanciallyFit terminal. Goodbye!");
         System.exit(0);
     }
 
+    // EFFECTS: Uses the returnAttendanceDay method to print a list of people who attended on a certain day
     private void attendanceChecker(Scanner scanner) {
-
         System.out.print("Enter date to check attendance for (YYYY-MM-DD): ");
         String date = scanner.nextLine();
         if (membersManager.returnAttendanceDay(date).isEmpty()) {
@@ -77,6 +81,7 @@ public class FinanciallyFitUI  {
         }
     }
 
+    // EFFECTS: prints out a list of members along with their regDate, Total Hours, and Days Attended
     private void viewMembers() {
 
         if (membersManager.getMembers().isEmpty()) {
@@ -94,6 +99,8 @@ public class FinanciallyFitUI  {
     }
 
 
+
+    // EFFECTS: Uses the calculateMonthlyBillPublic method to print a monthly bill for the user.
     private void calculateMonthlyBillUI(Scanner scanner) {
         System.out.print("Enter member name: ");
         String billMemberName = scanner.nextLine();
@@ -108,13 +115,9 @@ public class FinanciallyFitUI  {
 
 
 
-    // Constructs the GymMember Object
-    // REQUIRES: this
-    // MODIFIES: this
-    // EFFECTS: creates a GymMember with a username, allowed missed days,
-    // base membership cost, and an attendance log, (amongst another things)
-    // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
-    // !!! stated in the calling function (registerMember in FinanciallyFit)
+    // REQUIRES: inputs must respect REQUIRES of logAttendance in GymMember
+    // MODIFIES: GymMember
+    // EFFECTS: logs the attendance of the Member
     private void logMemberAttendance(Scanner scanner) {
         System.out.print("Enter member name: ");
         String memberName = scanner.nextLine();
@@ -134,13 +137,11 @@ public class FinanciallyFitUI  {
     }
 
 
-    // Constructs the GymMember Object
-    // REQUIRES: this
-    // MODIFIES: this
+    // Registers a member by constructing a GymMember object and adding it to membersManager.
+    // REQUIRES: Inputs need to respect REQUIRES of GymMember in GymMember.
+    // MODIFIES: GymMember
     // EFFECTS: creates a GymMember with a username, allowed missed days,
     // base membership cost, and an attendance log, (amongst another things)
-    // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
-    // !!! stated in the calling function (registerMember in FinanciallyFit)
     private void registerMember(Scanner scanner) {
         System.out.print("Enter member name: ");
         String name = scanner.nextLine();
@@ -156,6 +157,9 @@ public class FinanciallyFitUI  {
     }
 
 
+    // MODIFIES: membersManager
+    // EFFECTS: removes a member from the membersManager
+    // object using the removeMember method.
     private void deregisterMember(Scanner scanner) {
         System.out.print("Enter member name: ");
         String name = scanner.nextLine();

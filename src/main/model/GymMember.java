@@ -22,10 +22,13 @@ public class GymMember {
 
 
     // Constructs the GymMember Object (X)
-    // EFFECTS: creates a GymMember with a username, allowed missed days,
-    // base membership cost, and an attendance log, (amongst another things)
-    // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
-    // !!! stated in the calling function (registerMember in FinanciallyFit)
+    // REQUIRES: - allowedMiss <= numOfDaysLeftInMonth
+    //           - regDate MUST be in format YYYY-MM-DD
+    //           - If not the firsts GymMember object to be
+    //             constructed, Year and Month of GymMember has to match
+    //             Year and Month of last GymMember to be added to members
+    // EFFECTS: creates a GymMember with a username, allowed missed days, base
+    //          membership cost, and an attendance log, (amongst another things)
     public GymMember(String name, String regDate, Integer allowedMiss) {
 
         LocalDate registrationDate = LocalDate.parse(regDate);
@@ -43,7 +46,7 @@ public class GymMember {
     // Logs Attendance
     // REQUIRES: - logDate should be in format YYYY-MM-DD
     //           - logDate should be on, or after regDate
-    //           - logDate should be in the same month as regDate
+    //           - logDate should be in the same month and year as regDate
     // MODIFIES: this
     // EFFECTS: logs the attendance of the user for a date
     // - If the date is already populated, it is replaced by the new entry

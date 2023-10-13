@@ -41,7 +41,7 @@ public class MembersManager {
         return members.size();
     }
 
-    // REQUIRES: date input needs to follow YYYY-MM-DD format
+    // REQUIRES: date input needs to be a String and follow YYYY-MM-DD format
     // EFFECTS: returns a list of all patrons who attended the gym on a certain date.
     public List<String> returnAttendanceDay(String date) {
         List<String> memberlist = new ArrayList<>();
