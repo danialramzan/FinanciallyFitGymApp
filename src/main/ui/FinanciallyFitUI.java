@@ -23,25 +23,25 @@ public class FinanciallyFitUI  {
             System.out.print("Please enter your choice: ");
             String choice = scanner.nextLine();
 
-            if (choice.equalsIgnoreCase("1") || choice.equalsIgnoreCase("r")) {
+            if (choice.equals("1") || choice.equalsIgnoreCase("r")) {
                 registerMember(scanner);
 
-            } else if (choice.equalsIgnoreCase("2") || choice.equalsIgnoreCase("d")) {
+            } else if (choice.equals("2") || choice.equalsIgnoreCase("d")) {
                 deregisterMember(scanner);
 
-            } else if (choice.equalsIgnoreCase("3") || choice.equalsIgnoreCase("l")) {
+            } else if (choice.equals("3") || choice.equalsIgnoreCase("l")) {
                 logMemberAttendance(scanner);
 
-            } else if (choice.equalsIgnoreCase("4") || choice.equalsIgnoreCase("c")) {
+            } else if (choice.equals("4") || choice.equalsIgnoreCase("c")) {
                 calculateMonthlyBillUI(scanner);
 
-            } else if (choice.equalsIgnoreCase("5") || choice.equalsIgnoreCase("v")) {
+            } else if (choice.equals("5") || choice.equalsIgnoreCase("v")) {
                 viewMembers();
 
-            } else if (choice.equalsIgnoreCase("6") || choice.equalsIgnoreCase("a")) {
+            } else if (choice.equals("6") || choice.equalsIgnoreCase("a")) {
                 attendanceChecker(scanner);
 
-            } else if (choice.equalsIgnoreCase("7") || choice.equalsIgnoreCase("e")) {
+            } else if (choice.equals("7") || choice.equalsIgnoreCase("e")) {
                 exit();
 
             } else {
