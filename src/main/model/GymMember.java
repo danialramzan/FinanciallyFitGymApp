@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 /*
- * Represents a Gym Member.
+ * Represents a Gym Member (X).
  */
 public class GymMember {
     private final String username;
@@ -21,8 +21,7 @@ public class GymMember {
 
 
 
-    // Constructs the GymMember Object
-    // MODIFIES: this
+    // Constructs the GymMember Object (X)
     // EFFECTS: creates a GymMember with a username, allowed missed days,
     // base membership cost, and an attendance log, (amongst another things)
     // !!! allowedMiss and registrationDate are governed by a REQUIRES clause
@@ -113,12 +112,12 @@ public class GymMember {
         return DAILY_FEE_MULTIPLIER;
     }
 
-    // EFFECTS: returns daily fee penalty
+    // EFFECTS: returns Daily Fee Penalty
     public int getDailyPenalty() {
         return DAILY_PENALTY;
     }
 
-    // EFFECTS: returns attendance hashmap
+    // EFFECTS: returns Attendance Log
     public Map<String, Double> getAttendanceLog() {
         return attendanceLog;
     }

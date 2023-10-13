@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class FinanciallyFitModelTest {
 
     private GymMember testGymMember;
-    private GymMember testGymMember2;
     private ArrayList<GymMember> testList;
     private FinanciallyFitModel financiallyFitModel;
 
@@ -19,7 +18,7 @@ public class FinanciallyFitModelTest {
     void BeforeEach() {
         testList = new ArrayList<>();
         testGymMember = new GymMember("danial", "2023-01-31", 0);
-        testGymMember2 = new GymMember("gregor", "2023-01-02", 0);
+        GymMember testGymMember2 = new GymMember("gregor", "2023-01-02", 0);
         financiallyFitModel = new FinanciallyFitModel();
         testList.add(testGymMember);
         testList.add(testGymMember2);
