@@ -1,12 +1,16 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /*
  * Represents a GymMembers List (Y).
  */
-public class MembersManager {
+public class MembersManager implements Writable {
 
     List<GymMember> members;
 
@@ -51,5 +55,23 @@ public class MembersManager {
             }
         }
         return memberlist;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Gym Members", gymMembersToJson());
+        return json;
+    }
+
+    // EFFECTS: returns things in this MembersManager as a JSON array
+    private JSONArray gymMembersToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (GymMember m : members) {
+            jsonArray.put(m.toJson());
+        }
+
+        return jsonArray;
     }
 }

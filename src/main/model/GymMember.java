@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.*;
 import java.time.LocalDate;
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
@@ -7,7 +10,7 @@ import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 /*
  * Represents a Gym Member (X).
  */
-public class GymMember {
+public class GymMember implements Writable {
     private final String username;
     private int attendanceCount;
     private final double baseMembershipCost;
@@ -40,6 +43,29 @@ public class GymMember {
         this.allowedMiss = allowedMiss;
         this.attendanceCount = 0;
         this.attendanceLog = new HashMap<>();
+    }
+
+
+    // Constructor for data persistence purposes
+    // REQUIRES: - allowedMiss <= numOfDaysLeftInMonth
+    //           - regDate MUST be in format YYYY-MM-DD dvuisdhgsdhngdsjgisdhnv !!!!!!!!!!!!!!!!!!!!!!!!!!
+    //           - If not the firsts GymMember object to be fgnifdngiofdng         CHANGE THIS
+    //             constructed, Year and Month of GymMember has to match
+    //             Year and Month of last GymMember to be added to members
+    // EFFECTS: creates a GymMember with a username, allowed missed days, base
+    //          membership cost, and an attendance log, (amongst another things)
+
+    public GymMember(Integer numOfDaysLeftInMonth, String username,
+                     Double baseMembershipCost, Double dailyPenalty, Integer allowedMiss,
+                     Integer attendanceCount, Map<String, Double> attendanceLog) {
+
+        this.numOfDaysLeftInMonth = numOfDaysLeftInMonth;
+        this.username = username;
+        this.baseMembershipCost = baseMembershipCost;
+        this.dailyPenalty =  dailyPenalty;
+        this.allowedMiss = allowedMiss;
+        this.attendanceCount = attendanceCount;
+        this.attendanceLog = attendanceLog;
     }
 
 
@@ -126,5 +152,21 @@ public class GymMember {
         return attendanceLog;
     }
 
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("numOfDaysLeftInMonth", numOfDaysLeftInMonth);
+        json.put("username", username);
+        json.put("baseMembershipCost", baseMembershipCost);
+        json.put("dailyPenalty", dailyPenalty);
+        json.put("allowedMiss", allowedMiss);
+        json.put("attendanceCount", attendanceCount);
+
+        JSONObject attendanceLogJsonObject = new JSONObject(attendanceLog);
+        json.put("attendanceLog", attendanceLogJsonObject);
+
+        return json;
+    }
 }
 

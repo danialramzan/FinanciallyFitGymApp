@@ -3,7 +3,11 @@ package ui;
 import model.FinanciallyFitModel;
 import model.GymMember;
 import model.MembersManager;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -12,11 +16,19 @@ import java.util.*;
  */
 public class FinanciallyFitUI  {
 
+    private static final String JSON_FILEPATH = "./data/membersManager.json";
+
     private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
-    private MembersManager membersManager = new MembersManager();
+    private MembersManager membersManager;
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: Starts the User Interface
-    public FinanciallyFitUI() {
+    public FinanciallyFitUI() throws FileNotFoundException {
+
+        jsonWriter = new JsonWriter(JSON_FILEPATH);
+        jsonReader = new JsonReader(JSON_FILEPATH);
+
         while (true) {
             Scanner scanner = new Scanner(System.in);
             displayMenu();
@@ -41,7 +53,13 @@ public class FinanciallyFitUI  {
             } else if (choice.equals("6") || choice.equalsIgnoreCase("a")) {
                 attendanceChecker(scanner);
 
-            } else if (choice.equals("7") || choice.equalsIgnoreCase("e")) {
+            } else if (choice.equals("7") || choice.equalsIgnoreCase("sa")) {
+                saveMembersManager();
+
+            } else if (choice.equals("8") || choice.equalsIgnoreCase("lo")) {
+                loadMembersManager();
+
+            } else if (choice.equals("9") || choice.equalsIgnoreCase("e")) {
                 exit();
 
             } else {
@@ -60,8 +78,10 @@ public class FinanciallyFitUI  {
         System.out.println("3. (l)og member attendance");
         System.out.println("4. (c)alculate monthly bill");
         System.out.println("5. (v)iew members");
-        System.out.println("6. (a)ttendace of members for day");
-        System.out.println("7. (e)xit");
+        System.out.println("6. (a)ttendance of members for day");
+        System.out.println("7. (sa)ve");
+        System.out.println("8. (lo)ad");
+        System.out.println("9. (e)xit");
     }
 
     // EFFECTS: Exits the Program
@@ -152,6 +172,7 @@ public class FinanciallyFitUI  {
 
 
         GymMember gymMember = new GymMember(name, regDate, allowedMiss);
+        membersManager = new MembersManager();
         membersManager.addMember(gymMember);
         System.out.println(name + " has been registered.");
     }
@@ -172,6 +193,29 @@ public class FinanciallyFitUI  {
             System.out.println("Member not found.");
         }
 
+    }
+
+    // EFFECTS: saves the current MembersManager instance to file
+    private void saveMembersManager() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(membersManager);
+            jsonWriter.close();
+            System.out.println("Successfully saved instance to " + JSON_FILEPATH);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_FILEPATH);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads MembersManager instance from file
+    private void loadMembersManager() {
+        try {
+            membersManager = jsonReader.read();
+            System.out.println("Successfully loaded instance from " + JSON_FILEPATH);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_FILEPATH);
+        }
     }
 
 }

@@ -23,3 +23,6 @@ This billing structure is suitable for anyone who like me, struggles to effectiv
 
 -  **As a user, at the end of the month I want to receive a monthly bill that shows the total amount I owe based on my attendance records, making it easy to track my expenses.**
 
+-  **As a user, I want to be able to be able to save the state and information of all of my Gym Members to a file.**
+
+-  **As a user, I want to be able to be able to load the state and information of all of my Gym Members from a pre-saved file so I dont have to reenter it every time I launch the program.**
