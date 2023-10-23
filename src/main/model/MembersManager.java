@@ -57,6 +57,7 @@ public class MembersManager implements Writable {
         return memberlist;
     }
 
+    // EFFECTS: puts the JSONArray of list of GymMembers into a JSONObject
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

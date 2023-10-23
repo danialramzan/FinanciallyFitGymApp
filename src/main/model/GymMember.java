@@ -148,6 +148,7 @@ public class GymMember implements Writable {
     }
 
 
+    // EFFECTS: stores information for each GymMember as a JsonObject for saving.
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

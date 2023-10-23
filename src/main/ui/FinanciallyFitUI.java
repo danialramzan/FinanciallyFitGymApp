@@ -24,7 +24,6 @@ public class FinanciallyFitUI  {
     private JsonReader jsonReader;
 
     // EFFECTS: Starts the User Interface
-    @SuppressWarnings("methodlength")
     public FinanciallyFitUI() throws FileNotFoundException {
 
         jsonWriter = new JsonWriter(JSON_FILEPATH);
@@ -32,45 +31,89 @@ public class FinanciallyFitUI  {
 
         while (true) {
             Scanner scanner = new Scanner(System.in);
-            displayMenu();
-            System.out.print("Please enter your choice: ");
-            String choice = scanner.nextLine();
 
-            if (choice.equals("1") || choice.equalsIgnoreCase("r")) {
-                registerMember(scanner);
-
-            } else if (choice.equals("2") || choice.equalsIgnoreCase("d")) {
-                deregisterMember(scanner);
-
-            } else if (choice.equals("3") || choice.equalsIgnoreCase("l")) {
-                logMemberAttendance(scanner);
-
-            } else if (choice.equals("4") || choice.equalsIgnoreCase("c")) {
-                calculateMonthlyBillUI(scanner);
-
-            } else if (choice.equals("5") || choice.equalsIgnoreCase("v")) {
-                viewMembers();
-
-            } else if (choice.equals("6") || choice.equalsIgnoreCase("a")) {
-                attendanceChecker(scanner);
-
-            } else if (choice.equals("7") || choice.equalsIgnoreCase("sa")) {
-                saveMembersManager();
-
-            } else if (choice.equals("8") || choice.equalsIgnoreCase("lo")) {
-                loadMembersManager();
-
-            } else if (choice.equals("9") || choice.equalsIgnoreCase("e")) {
-                exit();
-
-            } else {
-                System.out.println("Invalid choice. Please try again.");
+            if (membersManager.getSize() == 0) {
+                displayMenu1();
+                System.out.print("Please enter your choice: ");
+                String choice = scanner.nextLine();
+                processInput1(choice, scanner);
+            }
+            else {
+                displayMenu2();
+                System.out.print("Please enter your choice: ");
+                String choice = scanner.nextLine();
+                processInput2(choice, scanner);
             }
         }
     }
 
-    // EFFECTS: Displays the Menu
-    public void displayMenu() {
+    // EFFECTS: processes inputs for the primary menu
+    private void processInput1(String choice, Scanner scanner) {
+        if (choice.equals("1") || choice.equalsIgnoreCase("r")) {
+            registerMember(scanner);
+
+        } else if (choice.equals("2") || choice.equalsIgnoreCase("sa")) {
+            saveMembersManager();
+
+        } else if (choice.equals("3") || choice.equalsIgnoreCase("lo")) {
+            loadMembersManager();
+
+        } else if (choice.equals("4") || choice.equalsIgnoreCase("e")) {
+            exit();
+
+        } else {
+            System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
+    // EFFECTS: processes inputs for the secondary menu
+    private void processInput2(String choice, Scanner scanner) {
+
+        if (choice.equals("1") || choice.equalsIgnoreCase("r")) {
+            registerMember(scanner);
+
+        } else if (choice.equals("2") || choice.equalsIgnoreCase("d")) {
+            deregisterMember(scanner);
+
+        } else if (choice.equals("3") || choice.equalsIgnoreCase("l")) {
+            logMemberAttendance(scanner);
+
+        } else if (choice.equals("4") || choice.equalsIgnoreCase("c")) {
+            calculateMonthlyBillUI(scanner);
+
+        } else if (choice.equals("5") || choice.equalsIgnoreCase("v")) {
+            viewMembers();
+
+        } else if (choice.equals("6") || choice.equalsIgnoreCase("a")) {
+            attendanceChecker(scanner);
+
+        } else if (choice.equals("7") || choice.equalsIgnoreCase("sa")) {
+            saveMembersManager();
+
+        } else if (choice.equals("8") || choice.equalsIgnoreCase("lo")) {
+            loadMembersManager();
+
+        } else if (choice.equals("9") || choice.equalsIgnoreCase("e")) {
+            exit();
+
+        } else {
+            System.out.println("Invalid choice. Please try again.");
+        }
+    }
+
+    // EFFECTS: Displays the starting Menu
+    public void displayMenu1() {
+        System.out.println("__________________________");
+        System.out.println("~FinanciallyFit Terminal~");
+        System.out.println("__________________________");
+        System.out.println("1. (r)egister member");
+        System.out.println("2. (sa)ve");
+        System.out.println("3. (lo)ad");
+        System.out.println("4. (e)xit");
+    }
+
+    // EFFECTS: Displays the secondary menu (when MembersManager is not empty)
+    public void displayMenu2() {
         System.out.println("__________________________");
         System.out.println("~FinanciallyFit Terminal~");
         System.out.println("__________________________");
