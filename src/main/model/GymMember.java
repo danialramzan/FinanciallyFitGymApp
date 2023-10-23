@@ -47,13 +47,8 @@ public class GymMember implements Writable {
 
 
     // Constructor for data persistence purposes
-    // REQUIRES: - allowedMiss <= numOfDaysLeftInMonth
-    //           - regDate MUST be in format YYYY-MM-DD dvuisdhgsdhngdsjgisdhnv !!!!!!!!!!!!!!!!!!!!!!!!!!
-    //           - If not the firsts GymMember object to be fgnifdngiofdng         CHANGE THIS
-    //             constructed, Year and Month of GymMember has to match
-    //             Year and Month of last GymMember to be added to members
-    // EFFECTS: creates a GymMember with a username, allowed missed days, base
-    //          membership cost, and an attendance log, (amongst another things)
+    // EFFECTS: recreates a GymMember with numOfDaysLeftInMonth,
+    // username, baseMembershipCost, dailyPenalty, allowedMiss, attendanceCount, attendanceLog
 
     public GymMember(Integer numOfDaysLeftInMonth, String username,
                      Double baseMembershipCost, Double dailyPenalty, Integer allowedMiss,

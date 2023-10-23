@@ -1,8 +1,7 @@
 package persistence;
 
-import model.Category;
-import model.Thingy;
-import model.WorkRoom;
+import model.GymMember;
+import model.MembersManager;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,7 +15,7 @@ class JsonReaderTest extends JsonTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./data/noSuchFile.json");
         try {
-            WorkRoom wr = reader.read();
+            MembersManager mm = reader.read();
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -25,26 +24,27 @@ class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderEmptyWorkRoom() {
-        JsonReader reader = new JsonReader("./data/testReaderEmptyWorkRoom.json");
+        JsonReader reader = new JsonReader("./data/testReaderEmptyMembersManager.json");
         try {
-            WorkRoom wr = reader.read();
-            assertEquals("My work room", wr.getName());
-            assertEquals(0, wr.numThingies());
+            MembersManager mm = reader.read();
+            assertEquals(0, mm.getSize());
         } catch (IOException e) {
             fail("Couldn't read from file");
         }
     }
 
+
     @Test
     void testReaderGeneralWorkRoom() {
-        JsonReader reader = new JsonReader("./data/testReaderGeneralWorkRoom.json");
+        JsonReader reader = new JsonReader("./data/testReaderGeneralMembersManager.json");
         try {
-            WorkRoom wr = reader.read();
-            assertEquals("My work room", wr.getName());
-            List<Thingy> thingies = wr.getThingies();
-            assertEquals(2, thingies.size());
-            checkThingy("needle", Category.STITCHING, thingies.get(0));
-            checkThingy("saw", Category.WOODWORK, thingies.get(1));
+            MembersManager mm = reader.read();
+            List<GymMember> gymMembers = mm.getMembers();
+            assertEquals(2, gymMembers.size());
+            checkGymMember("danial","2023-10-22", 1,
+                    3.0, gymMembers.get(0));
+            checkGymMember("gregor","2023-10-23", 2,
+                    7.0, gymMembers.get(1));
         } catch (IOException e) {
             fail("Couldn't read from file");
         }

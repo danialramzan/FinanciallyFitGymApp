@@ -19,7 +19,7 @@ public class FinanciallyFitUI  {
     private static final String JSON_FILEPATH = "./data/membersManager.json";
 
     private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
-    private MembersManager membersManager;
+    private MembersManager membersManager = new MembersManager(); ;
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
@@ -172,7 +172,6 @@ public class FinanciallyFitUI  {
 
 
         GymMember gymMember = new GymMember(name, regDate, allowedMiss);
-        membersManager = new MembersManager();
         membersManager.addMember(gymMember);
         System.out.println(name + " has been registered.");
     }

@@ -1,13 +1,15 @@
 package persistence;
 
-import model.Category;
-import model.Thingy;
+import model.GymMember;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JsonTest {
-    protected void checkThingy(String name, Category category, Thingy thingy) {
-        assertEquals(name, thingy.getName());
-        assertEquals(category, thingy.getCategory());
+    protected void checkGymMember(String name, String regDate, Integer attendanceCount,
+                                  Double totalHours, GymMember gymMember) {
+        assertEquals(name, gymMember.getName());
+        assertEquals(regDate, gymMember.getRegDate());
+        assertEquals(attendanceCount, gymMember.getAttendanceCount());
+        assertEquals(totalHours, gymMember.getTotalHours());
     }
 }

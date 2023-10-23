@@ -1,24 +1,42 @@
 package persistence;
 
-import model.Category;
-import model.Thingy;
-import model.WorkRoom;
+import model.GymMember;
+import model.MembersManager;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class JsonWriterTest extends JsonTest {
-    //NOTE TO CPSC 210 STUDENTS: the strategy in designing tests for the JsonWriter is to
-    //write data to a file and then use the reader to read it back in and check that we
-    //read in a copy of what was written out.
+
+    Map<String, Double> testAttendanceLog1;
+    Map<String, Double> testAttendanceLog2;
+    GymMember testGymMember1;
+    GymMember testGymMember2;
+
+
+    @BeforeEach
+    void setUp() {
+        testAttendanceLog1 = new HashMap<>();
+        testAttendanceLog1.put("2023-10-22", 3.0);
+        testGymMember1 = new GymMember(10, "paul_2023-10-22",
+                10.0, 15.0, 4, 1, testAttendanceLog1);
+        testAttendanceLog2 = new HashMap<>();
+        testAttendanceLog2.put("2023-10-24", 4.0);
+        testAttendanceLog2.put("2023-10-25", 3.0);
+        testGymMember2 = new GymMember(9, "obama_2023-10-23",
+                10.0, 15.0, 3, 2, testAttendanceLog2);
+    }
 
     @Test
     void testWriterInvalidFile() {
         try {
-            WorkRoom wr = new WorkRoom("My work room");
+            MembersManager mm = new MembersManager();
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -30,16 +48,15 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterEmptyWorkroom() {
         try {
-            WorkRoom wr = new WorkRoom("My work room");
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyWorkroom.json");
+            MembersManager mm = new MembersManager();
+            JsonWriter writer = new JsonWriter("./data/testWriterEmptyMembersManager.json");
             writer.open();
-            writer.write(wr);
+            writer.write(mm);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterEmptyWorkroom.json");
-            wr = reader.read();
-            assertEquals("My work room", wr.getName());
-            assertEquals(0, wr.numThingies());
+            JsonReader reader = new JsonReader("./data/testWriterEmptyMembersManager.json");
+            mm = reader.read();
+            assertEquals(0, mm.getSize());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -48,21 +65,22 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterGeneralWorkroom() {
         try {
-            WorkRoom wr = new WorkRoom("My work room");
-            wr.addThingy(new Thingy("saw", Category.METALWORK));
-            wr.addThingy(new Thingy("needle", Category.STITCHING));
-            JsonWriter writer = new JsonWriter("./data/testWriterGeneralWorkroom.json");
+            MembersManager mm = new MembersManager();
+            mm.addMember(testGymMember1);
+            mm.addMember(testGymMember2);
+            JsonWriter writer = new JsonWriter("./data/testWriterGeneralMembersManager.json");
             writer.open();
-            writer.write(wr);
+            writer.write(mm);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterGeneralWorkroom.json");
-            wr = reader.read();
-            assertEquals("My work room", wr.getName());
-            List<Thingy> thingies = wr.getThingies();
-            assertEquals(2, thingies.size());
-            checkThingy("saw", Category.METALWORK, thingies.get(0));
-            checkThingy("needle", Category.STITCHING, thingies.get(1));
+            JsonReader reader = new JsonReader("./data/testWriterGeneralMembersManager.json");
+            mm = reader.read();
+            List<GymMember> gymMembers = mm.getMembers();
+            assertEquals(2, gymMembers.size());
+            checkGymMember("paul","2023-10-22", 1,
+                    3.0, gymMembers.get(0));
+            checkGymMember("obama","2023-10-23", 2,
+                    7.0, gymMembers.get(1));
 
         } catch (IOException e) {
             fail("Exception should not have been thrown");
