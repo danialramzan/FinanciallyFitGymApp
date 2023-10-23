@@ -19,11 +19,12 @@ public class FinanciallyFitUI  {
     private static final String JSON_FILEPATH = "./data/membersManager.json";
 
     private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
-    private MembersManager membersManager = new MembersManager(); ;
+    private MembersManager membersManager = new MembersManager();
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
     // EFFECTS: Starts the User Interface
+    @SuppressWarnings("methodlength")
     public FinanciallyFitUI() throws FileNotFoundException {
 
         jsonWriter = new JsonWriter(JSON_FILEPATH);

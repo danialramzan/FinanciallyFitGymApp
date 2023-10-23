@@ -52,7 +52,7 @@ public class JsonReader {
     // MODIFIES: mm
     // EFFECTS: parses gym members from JSON object and adds them to MembersManager
     private void addGymMembers(MembersManager mm, JSONObject jsonObject) {
-            JSONArray jsonArray = jsonObject.getJSONArray("Gym Members");
+        JSONArray jsonArray = jsonObject.getJSONArray("Gym Members");
         for (Object json : jsonArray) {
             JSONObject nextMember = (JSONObject) json;
             addGymMember(mm, nextMember);
