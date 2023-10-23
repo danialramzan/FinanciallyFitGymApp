@@ -37,8 +37,7 @@ public class FinanciallyFitUI  {
                 System.out.print("Please enter your choice: ");
                 String choice = scanner.nextLine();
                 processInput1(choice, scanner);
-            }
-            else {
+            } else {
                 displayMenu2();
                 System.out.print("Please enter your choice: ");
                 String choice = scanner.nextLine();
