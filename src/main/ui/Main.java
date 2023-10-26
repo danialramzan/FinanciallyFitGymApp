@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 /*
  * Starts the FinanciallyFit application by running FinanciallyFitUI
  */
+
+// PHASE 2 COMMENT: save/load functionality (persistence) has been implemented based off of JsonSerializationDemo.
 public class Main {
     public static void main(String[] args) {
         try {
