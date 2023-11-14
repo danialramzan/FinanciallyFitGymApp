@@ -14,7 +14,7 @@ import java.util.*;
 /*
  * Represents the Gym Interface.
  */
-public class FinanciallyFitUI  {
+public class FinanciallyFitConsoleUI {
 
     private static final String JSON_FILEPATH = "./data/membersManager.json";
 
@@ -24,7 +24,7 @@ public class FinanciallyFitUI  {
     private JsonReader jsonReader;
 
     // EFFECTS: Starts the User Interface
-    public FinanciallyFitUI() throws FileNotFoundException {
+    public FinanciallyFitConsoleUI() throws FileNotFoundException {
 
         jsonWriter = new JsonWriter(JSON_FILEPATH);
         jsonReader = new JsonReader(JSON_FILEPATH);
