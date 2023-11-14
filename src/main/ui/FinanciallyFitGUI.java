@@ -14,6 +14,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
+import java.awt.Toolkit;
 
 // Imports from console UI
 import model.FinanciallyFitModel;
@@ -39,6 +40,11 @@ public class FinanciallyFitGUI extends JFrame  {
     private JProgressBar progressBar;
     private ImageIcon imageIconSmall = new ImageIcon("data/logowide.png");
     private JPanel panel;
+    private JPanel panel2;
+    private Dimension notificationScreenSize = new Dimension(
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1.25) ,
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1.25));
+
 
 
     public FinanciallyFitGUI() throws InterruptedException, FileNotFoundException {
@@ -48,9 +54,9 @@ public class FinanciallyFitGUI extends JFrame  {
         jsonWriter = new JsonWriter(JSON_FILEPATH);
         jsonReader = new JsonReader(JSON_FILEPATH);
 
-        // Splash screen
-        showSplashScreen(3600);
-        Thread.sleep(3600);
+//        // Splash screen
+//        showSplashScreen(3600);
+//        Thread.sleep(3600);
 
         // Go fullscreen
         setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -64,19 +70,31 @@ public class FinanciallyFitGUI extends JFrame  {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(Color.decode("#262630"));
 
+        panel2 = new JPanel();
+        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
+        panel2.setBackground(Color.decode("#262630"));
 
         // Spacing
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel2.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Add Items
         JLabel logo = new JLabel(imageIconSmall);
         logo.setBackground(Color.decode("#262630"));
         logo.setForeground(Color.WHITE);
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel logo2 = new JLabel(imageIconSmall);
+        logo2.setBackground(Color.decode("#262630"));
+        logo2.setForeground(Color.WHITE);
+        logo2.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         panel.add(logo);
+        panel2.add(logo2);
 
         // Spacing
-        panel.add(Box.createRigidArea(new Dimension(0, 50)));
+        panel.add(Box.createRigidArea(new Dimension(0, 40)));
+        panel2.add(Box.createRigidArea(new Dimension(0, 40)));
 
         // GANG GANG'
 
@@ -97,6 +115,7 @@ public class FinanciallyFitGUI extends JFrame  {
 //        btn.setBackground(Color.decode("#262630"));
 //         btn.setForeground(Color.WHITE);
 
+        initializeMenus();
         displayAppropriateMenu();
 
 
@@ -111,35 +130,34 @@ public class FinanciallyFitGUI extends JFrame  {
 
     private void displayAppropriateMenu() {
         if (membersManager.getSize() == 0) {
-            displayMenu1();
-//                System.out.print("Please enter your choice: ");
-//                String choice = scanner.nextLine();
-//                processInput1(choice, scanner);
+            setContentPane(panel);
+            revalidate();
+            repaint();
             } else {
-            displayMenu2();
-//                System.out.print("Please enter your choice: ");
-//                String choice = scanner.nextLine();
-//                processInput2(choice, scanner);
+            setContentPane(panel2);
+            revalidate();
+            repaint();
             }
     }
 
-    private void displayMenu1() {
+    private void initializeMenus() {
         addRegisterMemberButton(panel);
         addSaveButton(panel);
         addLoadButton(panel);
         addExitButton(panel);
+        addRegisterMemberButton(panel2);
+        addDeregisterMemberButton(panel2);
+        addLogMemberAttendanceButton(panel2);
+        addCalculateMonthlyBillButton(panel2);
+        addCheckAttendanceOfMembersForDayButton(panel2);
+        addSaveButton(panel2);
+        addLoadButton(panel2);
+        addExitButton(panel2);
     }
 
-    private void displayMenu2() {
-        addRegisterMemberButton(panel);
-        addDeregisterMemberButton(panel);
-        addLogMemberAttendanceButton(panel);
-        addCalculateMonthlyBillButton(panel);
-        addCheckAttendanceOfMembersForDayButton(panel);
-        addSaveButton(panel);
-        addLoadButton(panel);
-        addExitButton(panel);
-    }
+//    private void displayMenu2() {
+//
+//    }
 
     //        System.out.println("__________________________");
 //        System.out.println("~FinanciallyFit Terminal~");
@@ -158,9 +176,9 @@ public class FinanciallyFitGUI extends JFrame  {
     private void addRegisterMemberButton(Container container) {
         JButton button = new JButton("Register Member");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -172,9 +190,9 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addDeregisterMemberButton(Container container) {
         JButton button = new JButton("Deregister Member");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -186,9 +204,9 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addLogMemberAttendanceButton(Container container) {
         JButton button = new JButton("Log Member Attendance");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -198,11 +216,11 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
     public void addCalculateMonthlyBillButton(Container container) {
-        JButton button = new JButton("Calculate Monthly Bill Button");
+        JButton button = new JButton("Calculate Monthly Bill");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -214,9 +232,9 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addCheckAttendanceOfMembersForDayButton(Container container) {
         JButton button = new JButton("Check Attendance Of Members For Day");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -228,10 +246,29 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addSaveButton(Container container) {
         JButton button = new JButton("Save");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String returnString;
+                try {
+                    jsonWriter.open();
+                    jsonWriter.write(membersManager);
+                    jsonWriter.close();
+                    returnString = "Successfully saved instance to " + JSON_FILEPATH;
+                } catch (FileNotFoundException fnfe) {
+                    returnString = "Unable to write to file: " + JSON_FILEPATH;
+                }
+                JOptionPane.showMessageDialog(
+                        null,
+                        returnString,
+                        "Information",
+                        JOptionPane.INFORMATION_MESSAGE,
+                        UIManager.getIcon("OptionPane.informationIcon"));
+            }
+        });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
         button.setFocusPainted(false);
@@ -264,18 +301,31 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addLoadButton(Container container) {
         JButton button = new JButton("Load");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                String returnString;
                 try {
                     membersManager = jsonReader.read();
-                    System.out.println("Successfully loaded instance from " + JSON_FILEPATH);
-                    displayAppropriateMenu();
+                    returnString = "Successfully loaded instance from " + JSON_FILEPATH;
                 } catch (IOException ioe) {
-                    System.out.println("Unable to read from file: " + JSON_FILEPATH);
+                    returnString = "Unable to read from file: " + JSON_FILEPATH;
+                }
+                int option = JOptionPane.showOptionDialog(
+                        null,
+                        returnString,
+                        "Information",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE,
+                        UIManager.getIcon("OptionPane.informationIcon"),
+                        new Object[]{"OK"},
+                        "OK");
+
+                if (option == 0) {
+                    displayAppropriateMenu();
                 }
             }
         });
@@ -289,14 +339,15 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addExitButton(Container container) {
         JButton button = new JButton("Exit");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(400, 50));
-        button.setMaximumSize(new Dimension(400, 50));
-        button.setPreferredSize(new Dimension(400, 50));
+        button.setMinimumSize(new Dimension(650, 60));
+        button.setMaximumSize(new Dimension(650, 60));
+        button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
         button.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         try {
-                            AudioInputStream aui = AudioSystem.getAudioInputStream(new File("data/byebye.wav"));
+                            AudioInputStream aui =
+                                    AudioSystem.getAudioInputStream(new File("data/byebye.wav"));
                             Clip clip = AudioSystem.getClip();
                             clip.open(aui);
                             clip.start();
@@ -413,7 +464,7 @@ public class FinanciallyFitGUI extends JFrame  {
     // Display a splash screen for the specified duration in milliseconds
     private void showSplashScreen(int duration) {
 
-        ImageIcon imageIcon = new ImageIcon("data/logo.png"); // Replace with the path to your image
+        ImageIcon imageIcon = new ImageIcon("data/logo.png");
         JLabel imageLabel = new JLabel(imageIcon);
         JWindow splash = new JWindow();
 
