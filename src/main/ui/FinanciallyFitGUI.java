@@ -17,6 +17,7 @@ import javax.swing.Timer;
 
 // Imports from console UI
 import model.FinanciallyFitModel;
+import model.GymMember;
 import model.MembersManager;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -39,9 +40,7 @@ public class FinanciallyFitGUI extends JFrame  {
     private ImageIcon imageIconSmall = new ImageIcon("data/logowide.png");
     private JPanel panel;
     private JPanel panel2;
-    private JPanel regPanel;
-    private JPanel deregPanel;
-   // private JPanel panel2;
+    // private JPanel panel2;
    // private JPanel panel2;
 
 
@@ -74,11 +73,6 @@ public class FinanciallyFitGUI extends JFrame  {
         // GANG GANG'
 
         // Panel with BoxLayout
-
-
-//        Enter member name: danial
-//        Enter date of registration (YYYY-mm-dd): 2020-02-17
-//        Enter number of days allowed missed: 2
 
 
 
@@ -123,8 +117,7 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(label);
     }
 
-    private void addEmptyTextBox(Container container) {
-        JTextField textBox = new JTextField();
+    private void addEmptyTextBox(Container container, JTextField textBox) {
         textBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         textBox.setMinimumSize(new Dimension(650, 60));
         textBox.setMaximumSize(new Dimension(650, 60));
@@ -173,24 +166,6 @@ public class FinanciallyFitGUI extends JFrame  {
         addExitButton(panel2);
     }
 
-//    private void displayMenu2() {
-//
-//    }
-
-    //        System.out.println("__________________________");
-//        System.out.println("~FinanciallyFit Terminal~");
-//        System.out.println("__________________________");
-//        System.out.println("1. (r)egister member");
-//        System.out.println("2. (d)eregister member");
-//        System.out.println("3. (l)og member attendance");
-//        System.out.println("4. (c)alculate monthly bill");
-//        System.out.println("5. (v)iew members");
-//        System.out.println("6. (a)ttendance of members for day");
-//        System.out.println("7. (sa)ve");
-//        System.out.println("8. (lo)ad");
-//        System.out.println("9. (e)xit");
-
-
     private void addRegisterMemberButton(Container container) {
         JButton button = new JButton("Register Member");
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -211,29 +186,106 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
     private void initializeRegisterMembers() {
-        regPanel = new JPanel();
+        JPanel regPanel = new JPanel();
         initializeNewPanel(regPanel);
         addLabel("Enter member name:", regPanel);
-        addEmptyTextBox(regPanel);
+        JTextField textBoxName = new JTextField();
+        addEmptyTextBox(regPanel, textBoxName);
         addLabel("Enter date of registration (YYYY-mm-dd):", regPanel);
-        addEmptyTextBox(regPanel);
+        JTextField textBoxRegDate = new JTextField();
+        addEmptyTextBox(regPanel, textBoxRegDate);
         addLabel("Enter number of days allowed missed:", regPanel);
-        addEmptyTextBox(regPanel);
+        JTextField textBoxAllowedMiss = new JTextField();
+        addEmptyTextBox(regPanel, textBoxAllowedMiss);
         JButton button = new JButton("Okay");
         button.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        displayAppropriateMenu();
+                        registerMember(textBoxName, textBoxRegDate, textBoxAllowedMiss);
                     }
                 });
         button.setBackground(Color.decode("#262630"));
         button.setForeground(Color.WHITE);
-        regPanel.add(Box.createVerticalGlue());
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMinimumSize(new Dimension(100, 60));
+        button.setMaximumSize(new Dimension(100, 60));
+        button.setPreferredSize(new Dimension(100, 60));
+        button.setFont(new Font("Helvectica", Font.BOLD, 15));
+
+        button.setFocusPainted(false);
         regPanel.add(button);
-        regPanel.add(Box.createHorizontalGlue());
         setContentPane(regPanel);
         revalidate();
         repaint();
     }
+
+    private void initializeDeregisterMembers() {
+        JPanel deregPanel = new JPanel();
+        initializeNewPanel(deregPanel);
+        addLabel("Enter member name:", deregPanel);
+        JTextField textBoxName = new JTextField();
+        addEmptyTextBox(deregPanel, textBoxName);
+        JButton button = new JButton("Okay");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                deregisterMember(textBoxName);
+            }
+        });
+        button.setBackground(Color.decode("#262630"));
+        button.setForeground(Color.WHITE);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMinimumSize(new Dimension(100, 60));
+        button.setMaximumSize(new Dimension(100, 60));
+        button.setPreferredSize(new Dimension(100, 60));
+        button.setFont(new Font("Helvectica", Font.BOLD, 15));
+
+        button.setFocusPainted(false);
+        deregPanel.add(button);
+        setContentPane(deregPanel);
+        revalidate();
+        repaint();
+    }
+
+    private void registerMember
+            (JTextField textBoxName, JTextField textBoxRegDate, JTextField textBoxAllowedMiss) {
+            GymMember gymMember = new GymMember(textBoxName.getText(), textBoxRegDate.getText(),
+                    Integer.valueOf(textBoxAllowedMiss.getText()));
+            membersManager.addMember(gymMember);
+            int option = JOptionPane.showOptionDialog(
+                null, textBoxName.getText() + " has been registered.",
+                "Information",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                UIManager.getIcon("OptionPane.informationIcon"),
+                new Object[]{"OK"},
+                "OK");
+
+        if (option == 0) {
+            displayAppropriateMenu();
+        }
+        }
+
+    private void deregisterMember(JTextField textBoxName) {
+        GymMember foundMember =
+                financiallyFitModel.findGymMemberPublic(membersManager.getMembers(), textBoxName.getText());
+        String returnstring = "Member not found.";
+        if (foundMember != null) {
+            membersManager.removeMember(foundMember);
+            returnstring = textBoxName.getText() + " has been deregistered.";
+        }
+        int option = JOptionPane.showOptionDialog(
+                null, returnstring,
+                "Information",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                UIManager.getIcon("OptionPane.informationIcon"),
+                new Object[]{"OK"},
+                "OK");
+
+        if (option == 0) {
+            displayAppropriateMenu();
+        }
+    }
+
 
 
 
@@ -245,6 +297,11 @@ public class FinanciallyFitGUI extends JFrame  {
         button.setMaximumSize(new Dimension(650, 60));
         button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                initializeDeregisterMembers();
+            }
+        });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
         button.setFocusPainted(false);
@@ -674,38 +731,7 @@ public class FinanciallyFitGUI extends JFrame  {
 //        }
 //    }
 //
-//    // EFFECTS: Displays the starting Menu
-//    public void displayMenu1() {
-//        System.out.println("__________________________");
-//        System.out.println("~FinanciallyFit Terminal~");
-//        System.out.println("__________________________");
-//        System.out.println("1. (r)egister member");
-//        System.out.println("2. (sa)ve");
-//        System.out.println("3. (lo)ad");
-//        System.out.println("4. (e)xit");
-//    }
-//
-//    // EFFECTS: Displays the secondary menu (when MembersManager is not empty)
-//    public void displayMenu2() {
-//        System.out.println("__________________________");
-//        System.out.println("~FinanciallyFit Terminal~");
-//        System.out.println("__________________________");
-//        System.out.println("1. (r)egister member");
-//        System.out.println("2. (d)eregister member");
-//        System.out.println("3. (l)og member attendance");
-//        System.out.println("4. (c)alculate monthly bill");
-//        System.out.println("5. (v)iew members");
-//        System.out.println("6. (a)ttendance of members for day");
-//        System.out.println("7. (sa)ve");
-//        System.out.println("8. (lo)ad");
-//        System.out.println("9. (e)xit");
-//    }
-//
-//    // EFFECTS: Exits the Program
-//    private void exit() {
-//        System.out.println("Exiting the FinanciallyFit terminal. Goodbye!");
-//        System.exit(0);
-//    }
+
 //
 //    // EFFECTS: Uses the returnAttendanceDay method to print a list of people who attended on a certain day
 //    private void attendanceChecker(Scanner scanner) {
