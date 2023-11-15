@@ -14,7 +14,6 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
-import java.awt.Toolkit;
 
 // Imports from console UI
 import model.FinanciallyFitModel;
@@ -35,15 +34,16 @@ public class FinanciallyFitGUI extends JFrame  {
     private MembersManager membersManager = new MembersManager();
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-    private JLabel label;
     private JTextField field;
     private JProgressBar progressBar;
     private ImageIcon imageIconSmall = new ImageIcon("data/logowide.png");
     private JPanel panel;
     private JPanel panel2;
-    private Dimension notificationScreenSize = new Dimension(
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1.25) ,
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1.25));
+    private JPanel regPanel;
+    private JPanel deregPanel;
+   // private JPanel panel2;
+   // private JPanel panel2;
+
 
 
 
@@ -54,7 +54,7 @@ public class FinanciallyFitGUI extends JFrame  {
         jsonWriter = new JsonWriter(JSON_FILEPATH);
         jsonReader = new JsonReader(JSON_FILEPATH);
 
-//        // Splash screen
+        // Splash screen
 //        showSplashScreen(3600);
 //        Thread.sleep(3600);
 
@@ -65,38 +65,21 @@ public class FinanciallyFitGUI extends JFrame  {
         // Set border for the content pane
         ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
 
-        // Panel with BoxLayout
+        // Initialize Panel with BoxLayout
         panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.decode("#262630"));
-
+        initializeNewPanel(panel);
         panel2 = new JPanel();
-        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-        panel2.setBackground(Color.decode("#262630"));
-
-        // Spacing
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
-        panel2.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        // Add Items
-        JLabel logo = new JLabel(imageIconSmall);
-        logo.setBackground(Color.decode("#262630"));
-        logo.setForeground(Color.WHITE);
-        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel logo2 = new JLabel(imageIconSmall);
-        logo2.setBackground(Color.decode("#262630"));
-        logo2.setForeground(Color.WHITE);
-        logo2.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        panel.add(logo);
-        panel2.add(logo2);
-
-        // Spacing
-        panel.add(Box.createRigidArea(new Dimension(0, 40)));
-        panel2.add(Box.createRigidArea(new Dimension(0, 40)));
+        initializeNewPanel(panel2);
 
         // GANG GANG'
+
+        // Panel with BoxLayout
+
+
+//        Enter member name: danial
+//        Enter date of registration (YYYY-mm-dd): 2020-02-17
+//        Enter number of days allowed missed: 2
+
 
 
 
@@ -128,16 +111,51 @@ public class FinanciallyFitGUI extends JFrame  {
         setVisible(true);
     }
 
+    private void addLabel(String text, Container container) {
+        JLabel label = new JLabel(text);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setMinimumSize(new Dimension(650, 60));
+        label.setMaximumSize(new Dimension(650, 60));
+        label.setPreferredSize(new Dimension(650, 60));
+        label.setFont(new Font("Helvectica", Font.BOLD, 25));
+        label.setBackground(Color.decode("#262630"));
+        label.setForeground(Color.WHITE);
+        container.add(label);
+    }
+
+    private void addEmptyTextBox(Container container) {
+        JTextField textBox = new JTextField();
+        textBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+        textBox.setMinimumSize(new Dimension(650, 60));
+        textBox.setMaximumSize(new Dimension(650, 60));
+        textBox.setPreferredSize(new Dimension(650, 60));
+        textBox.setFont(new Font("Helvectica", Font.BOLD, 25));
+        textBox.setBackground(Color.decode("#262630"));
+        textBox.setForeground(Color.WHITE);
+        container.add(textBox);
+        container.add(Box.createRigidArea(new Dimension(0, 20)));
+    }
+
+    private void initializeNewPanel(Container container) {
+        container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
+        container.setBackground(Color.decode("#262630"));
+        container.add(Box.createRigidArea(new Dimension(0, 10)));
+        JLabel logo = new JLabel(imageIconSmall);
+        logo.setBackground(Color.decode("#262630"));
+        logo.setForeground(Color.WHITE);
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        container.add(logo);
+        container.add(Box.createRigidArea(new Dimension(0, 40)));
+    }
+
     private void displayAppropriateMenu() {
         if (membersManager.getSize() == 0) {
             setContentPane(panel);
-            revalidate();
-            repaint();
-            } else {
+        } else {
             setContentPane(panel2);
-            revalidate();
-            repaint();
-            }
+        }
+        revalidate();
+        repaint();
     }
 
     private void initializeMenus() {
@@ -180,12 +198,45 @@ public class FinanciallyFitGUI extends JFrame  {
         button.setMaximumSize(new Dimension(650, 60));
         button.setPreferredSize(new Dimension(650, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                initializeRegisterMembers();
+            }
+        });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
         button.setFocusPainted(false);
         button.setBackground(Color.decode("#262630"));
         button.setForeground(Color.WHITE);
     }
+
+    private void initializeRegisterMembers() {
+        regPanel = new JPanel();
+        initializeNewPanel(regPanel);
+        addLabel("Enter member name:", regPanel);
+        addEmptyTextBox(regPanel);
+        addLabel("Enter date of registration (YYYY-mm-dd):", regPanel);
+        addEmptyTextBox(regPanel);
+        addLabel("Enter number of days allowed missed:", regPanel);
+        addEmptyTextBox(regPanel);
+        JButton button = new JButton("Okay");
+        button.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        displayAppropriateMenu();
+                    }
+                });
+        button.setBackground(Color.decode("#262630"));
+        button.setForeground(Color.WHITE);
+        regPanel.add(Box.createVerticalGlue());
+        regPanel.add(button);
+        regPanel.add(Box.createHorizontalGlue());
+        setContentPane(regPanel);
+        revalidate();
+        repaint();
+    }
+
+
+
 
     public void addDeregisterMemberButton(Container container) {
         JButton button = new JButton("Deregister Member");
@@ -759,28 +810,5 @@ public class FinanciallyFitGUI extends JFrame  {
 //        }
 //
 //    }
-//
-//    // EFFECTS: saves the current MembersManager instance to file
-//    private void saveMembersManager() {
-//        try {
-//            jsonWriter.open();
-//            jsonWriter.write(membersManager);
-//            jsonWriter.close();
-//            System.out.println("Successfully saved instance to " + JSON_FILEPATH);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to write to file: " + JSON_FILEPATH);
-//        }
-//    }
-//
-//    // MODIFIES: this
-//    // EFFECTS: loads MembersManager instance from file
-//    private void loadMembersManager() {
-//        try {
-//            membersManager = jsonReader.read();
-//            System.out.println("Successfully loaded instance from " + JSON_FILEPATH);
-//        } catch (IOException e) {
-//            System.out.println("Unable to read from file: " + JSON_FILEPATH);
-//        }
-//    }
-//
+
 //}
