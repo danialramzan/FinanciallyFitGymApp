@@ -30,24 +30,21 @@ import persistence.JsonWriter;
 
 public class FinanciallyFitGUI extends JFrame  {
 
+    private final ImageIcon imageIconSmall = new ImageIcon("data/logowide.png");
+    private final ImageIcon logo = new ImageIcon("data/logo.png");
+
     private static final String JSON_FILEPATH = "./data/membersManager.json";
     private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
     private MembersManager membersManager = new MembersManager();
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
-    private JTextField field;
     private JProgressBar progressBar;
-    private ImageIcon imageIconSmall = new ImageIcon("data/logowide.png");
     private JPanel panel;
     private JPanel panel2;
-    // private JPanel panel2;
-   // private JPanel panel2;
-
-
-
 
     public FinanciallyFitGUI() throws InterruptedException, FileNotFoundException {
         super("FinanciallyFit");
+        setIconImage(logo.getImage());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         jsonWriter = new JsonWriter(JSON_FILEPATH);
@@ -100,8 +97,6 @@ public class FinanciallyFitGUI extends JFrame  {
 
         // Set the panel as the content pane
         setContentPane(panel);
-
-        // Ensure visibility after setting up components
         setVisible(true);
     }
 
@@ -138,7 +133,7 @@ public class FinanciallyFitGUI extends JFrame  {
         logo.setForeground(Color.WHITE);
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
         container.add(logo);
-        container.add(Box.createRigidArea(new Dimension(0, 40)));
+        container.add(Box.createRigidArea(new Dimension(0, 30)));
     }
 
     private void displayAppropriateMenu() {
@@ -160,6 +155,7 @@ public class FinanciallyFitGUI extends JFrame  {
         addDeregisterMemberButton(panel2);
         addLogMemberAttendanceButton(panel2);
         addCalculateMonthlyBillButton(panel2);
+        addViewMembersButton(panel2);
         addCheckAttendanceOfMembersForDayButton(panel2);
         addSaveButton(panel2);
         addLoadButton(panel2);
@@ -168,11 +164,7 @@ public class FinanciallyFitGUI extends JFrame  {
 
     private void addRegisterMemberButton(Container container) {
         JButton button = new JButton("Register Member");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 initializeRegisterMembers();
@@ -180,6 +172,14 @@ public class FinanciallyFitGUI extends JFrame  {
         });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+
+    private static void setUpButton(JButton button, Integer width, Integer height, Integer fontSize ) {
+        button.setMinimumSize(new Dimension(width, height));
+        button.setMaximumSize(new Dimension(width, height));
+        button.setPreferredSize(new Dimension(width, height));
+        button.setFont(new Font("Helvectica", Font.BOLD, fontSize));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setFocusPainted(false);
         button.setBackground(Color.decode("#262630"));
         button.setForeground(Color.WHITE);
@@ -210,7 +210,6 @@ public class FinanciallyFitGUI extends JFrame  {
         button.setMaximumSize(new Dimension(100, 60));
         button.setPreferredSize(new Dimension(100, 60));
         button.setFont(new Font("Helvectica", Font.BOLD, 15));
-
         button.setFocusPainted(false);
         regPanel.add(button);
         setContentPane(regPanel);
@@ -245,8 +244,7 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
-    private void registerMember
-            (JTextField textBoxName, JTextField textBoxRegDate, JTextField textBoxAllowedMiss) {
+    private void registerMember(JTextField textBoxName, JTextField textBoxRegDate, JTextField textBoxAllowedMiss) {
             GymMember gymMember = new GymMember(textBoxName.getText(), textBoxRegDate.getText(),
                     Integer.valueOf(textBoxAllowedMiss.getText()));
             membersManager.addMember(gymMember);
@@ -265,9 +263,9 @@ public class FinanciallyFitGUI extends JFrame  {
         }
 
     private void deregisterMember(JTextField textBoxName) {
+        String returnstring = "Member not found.";
         GymMember foundMember =
                 financiallyFitModel.findGymMemberPublic(membersManager.getMembers(), textBoxName.getText());
-        String returnstring = "Member not found.";
         if (foundMember != null) {
             membersManager.removeMember(foundMember);
             returnstring = textBoxName.getText() + " has been deregistered.";
@@ -286,17 +284,9 @@ public class FinanciallyFitGUI extends JFrame  {
         }
     }
 
-
-
-
-
     public void addDeregisterMemberButton(Container container) {
         JButton button = new JButton("Deregister Member");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 initializeDeregisterMembers();
@@ -304,84 +294,131 @@ public class FinanciallyFitGUI extends JFrame  {
         });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
-        button.setFocusPainted(false);
-        button.setBackground(Color.decode("#262630"));
-        button.setForeground(Color.WHITE);
     }
 
     public void addLogMemberAttendanceButton(Container container) {
         JButton button = new JButton("Log Member Attendance");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
-        container.add(button);
-        container.add(Box.createRigidArea(new Dimension(0, 10)));
-        button.setFocusPainted(false);
-        button.setBackground(Color.decode("#262630"));
-        button.setForeground(Color.WHITE);
-    }
-
-    public void addCalculateMonthlyBillButton(Container container) {
-        JButton button = new JButton("Calculate Monthly Bill");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
-        container.add(button);
-        container.add(Box.createRigidArea(new Dimension(0, 10)));
-        button.setFocusPainted(false);
-        button.setBackground(Color.decode("#262630"));
-        button.setForeground(Color.WHITE);
-    }
-
-    public void addCheckAttendanceOfMembersForDayButton(Container container) {
-        JButton button = new JButton("Check Attendance Of Members For Day");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
-        container.add(button);
-        container.add(Box.createRigidArea(new Dimension(0, 10)));
-        button.setFocusPainted(false);
-        button.setBackground(Color.decode("#262630"));
-        button.setForeground(Color.WHITE);
-    }
-
-    public void addSaveButton(Container container) {
-        JButton button = new JButton("Save");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String returnString;
-                try {
-                    jsonWriter.open();
-                    jsonWriter.write(membersManager);
-                    jsonWriter.close();
-                    returnString = "Successfully saved instance to " + JSON_FILEPATH;
-                } catch (FileNotFoundException fnfe) {
-                    returnString = "Unable to write to file: " + JSON_FILEPATH;
-                }
-                JOptionPane.showMessageDialog(
-                        null,
-                        returnString,
-                        "Information",
-                        JOptionPane.INFORMATION_MESSAGE,
-                        UIManager.getIcon("OptionPane.informationIcon"));
+                initializeLogMemberAttendance();
             }
         });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
-        button.setFocusPainted(false);
+    }
+
+    public void initializeLogMemberAttendance() {
+        JPanel memberAttendancePanel = new JPanel();
+        initializeNewPanel(memberAttendancePanel);
+
+        addLabel("Enter member name:", memberAttendancePanel);
+        JTextField textBoxName = new JTextField();
+        addEmptyTextBox(memberAttendancePanel, textBoxName);
+
+        addLabel("Enter date to log attendance (YYYY-mm-dd): ", memberAttendancePanel);
+        JTextField textBoxLogDate = new JTextField();
+        addEmptyTextBox(memberAttendancePanel, textBoxLogDate);
+
+        addLabel("Enter time spent at the gym (hours): ", memberAttendancePanel);
+        JTextField textBoxHours = new JTextField();
+        addEmptyTextBox(memberAttendancePanel, textBoxHours);
+
+        JButton button = new JButton("Okay");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                logMemberAttendance(textBoxName, textBoxLogDate, textBoxHours);
+            }
+        });
         button.setBackground(Color.decode("#262630"));
         button.setForeground(Color.WHITE);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMinimumSize(new Dimension(100, 60));
+        button.setMaximumSize(new Dimension(100, 60));
+        button.setPreferredSize(new Dimension(100, 60));
+        button.setFont(new Font("Helvectica", Font.BOLD, 15));
+        button.setFocusPainted(false);
+        memberAttendancePanel.add(button);
+        setContentPane(memberAttendancePanel);
+        revalidate();
+        repaint();
+    }
+
+    public void logMemberAttendance(JTextField textBoxName, JTextField textBoxLogDate, JTextField textBoxHours) {
+        String returnstring = "Member not found.";
+        GymMember foundMember =
+                financiallyFitModel.findGymMemberPublic(membersManager.getMembers(), textBoxName.getText());
+        if (foundMember != null) {
+            foundMember.logAttendance(Double.parseDouble(textBoxHours.getText()), textBoxLogDate.getText());
+            returnstring =
+                    textBoxHours.getText() + " hours logged for " +
+                            textBoxName.getText() + " on " + textBoxLogDate.getText();
+        }
+                int option = JOptionPane.showOptionDialog(
+                null, returnstring,
+                "Information",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                UIManager.getIcon("OptionPane.informationIcon"),
+                new Object[]{"OK"},
+                "OK");
+
+        if (option == 0) {
+            displayAppropriateMenu();
+        }
+    }
+
+
+    public void addCalculateMonthlyBillButton(Container container) {
+        JButton button = new JButton("Calculate Monthly Bill");
+        setUpButton(button, 640, 55, 28);
+        container.add(button);
+        container.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+
+    public void addViewMembersButton(Container container) {
+        JButton button = new JButton("View Members");
+        setUpButton(button, 640, 55, 28);
+        container.add(button);
+        container.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+
+    public void addCheckAttendanceOfMembersForDayButton(Container container) {
+        JButton button = new JButton("Check Attendance Of Members For Day");
+        setUpButton(button, 640, 55, 28);
+        button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        container.add(button);
+        container.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+
+    public void addSaveButton(Container container) {
+        JButton button = new JButton("Save");
+        setUpButton(button, 640, 55, 28);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                initializeSave();
+            }
+        });
+        container.add(button);
+        container.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+
+    private void initializeSave() {
+        String returnString;
+        try {
+            jsonWriter.open();
+            jsonWriter.write(membersManager);
+            jsonWriter.close();
+            returnString = "Successfully saved instance to " + JSON_FILEPATH;
+        } catch (FileNotFoundException fnfe) {
+            returnString = "Unable to write to file: " + JSON_FILEPATH;
+        }
+        JOptionPane.showMessageDialog(
+                null,
+                returnString,
+                "Information",
+                JOptionPane.INFORMATION_MESSAGE,
+                UIManager.getIcon("OptionPane.informationIcon"));
     }
 
     //    private void saveMembersManager() {
@@ -408,79 +445,72 @@ public class FinanciallyFitGUI extends JFrame  {
 
     public void addLoadButton(Container container) {
         JButton button = new JButton("Load");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String returnString;
-                try {
-                    membersManager = jsonReader.read();
-                    returnString = "Successfully loaded instance from " + JSON_FILEPATH;
-                } catch (IOException ioe) {
-                    returnString = "Unable to read from file: " + JSON_FILEPATH;
-                }
-                int option = JOptionPane.showOptionDialog(
-                        null,
-                        returnString,
-                        "Information",
-                        JOptionPane.DEFAULT_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE,
-                        UIManager.getIcon("OptionPane.informationIcon"),
-                        new Object[]{"OK"},
-                        "OK");
-
-                if (option == 0) {
-                    displayAppropriateMenu();
-                }
+                initializeLoad();
             }
         });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
-        button.setFocusPainted(false);
-        button.setBackground(Color.decode("#262630"));
-        button.setForeground(Color.WHITE);
+    }
+
+    private void initializeLoad() {
+        String returnString;
+        try {
+            membersManager = jsonReader.read();
+            returnString = "Successfully loaded instance from " + JSON_FILEPATH;
+        } catch (IOException ioe) {
+            returnString = "Unable to read from file: " + JSON_FILEPATH;
+        }
+        int option = JOptionPane.showOptionDialog(
+                null,
+                returnString,
+                "Information",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                UIManager.getIcon("OptionPane.informationIcon"),
+                new Object[]{"OK"},
+                "OK");
+
+        if (option == 0) {
+            displayAppropriateMenu();
+        }
     }
 
     public void addExitButton(Container container) {
         JButton button = new JButton("Exit");
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setMinimumSize(new Dimension(650, 60));
-        button.setMaximumSize(new Dimension(650, 60));
-        button.setPreferredSize(new Dimension(650, 60));
-        button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        try {
-                            AudioInputStream aui =
-                                    AudioSystem.getAudioInputStream(new File("data/byebye.wav"));
-                            Clip clip = AudioSystem.getClip();
-                            clip.open(aui);
-                            clip.start();
-                        } catch (UnsupportedAudioFileException uafe) {
-                            System.out.println("1");
-                        } catch (IOException io) {
-                            System.out.println("2");
-                        } catch (LineUnavailableException lue) {
-                            System.out.println("3");
-                        }
-                        try {
-                            Thread.sleep(1500);
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        System.exit(0);
+                        initializeExit();
                     }
                 });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
-        button.setFocusPainted(false);
-        button.setBackground(Color.decode("#262630"));
-        button.setForeground(Color.WHITE);
     }
 
+    private static void initializeExit() {
+        try {
+            AudioInputStream aui =
+                    AudioSystem.getAudioInputStream(new File("data/byebye.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(aui);
+            clip.start();
+        } catch (UnsupportedAudioFileException uafe) {
+            System.out.println("UnsupportedException");
+        } catch (IOException io) {
+            System.out.println("IOException");
+        } catch (LineUnavailableException lue) {
+            System.out.println("LineUnavailableException");
+        }
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+        System.exit(0);
+    }
 
 
 //    public FinanciallyFitGUI() throws InterruptedException, FileNotFoundException {
@@ -572,7 +602,7 @@ public class FinanciallyFitGUI extends JFrame  {
     // Display a splash screen for the specified duration in milliseconds
     private void showSplashScreen(int duration) {
 
-        ImageIcon imageIcon = new ImageIcon("data/logo.png");
+        ImageIcon imageIcon = logo;
         JLabel imageLabel = new JLabel(imageIcon);
         JWindow splash = new JWindow();
 
