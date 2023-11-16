@@ -44,43 +44,6 @@ public class FinanciallyFitGUI extends JFrame  {
     private JProgressBar progressBar;
     private JPanel panel;
     private JPanel panel2;
-    private Dimension notificationScreenSize = new Dimension(
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1.25) ,
-            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1.25));
-
-
-//    JScrollPane scrollpane;
-//
-//    public ScrollPaneDemo() {
-//
-//        String teams[] = { "Deccan Chargers", "Kolkata Night Riders",
-//                "Mumbai Indians", "Chennai Super Kings",
-//                "Rajasthan Royals", "Royal Challengers Bangalore",
-//                "Kings XI Punjab", "Pune Warriors India",
-//                "Delhi Daredevils"
-//        };
-//
-//        JList list = new JList(teams);
-//        scrollpane = new JScrollPane(list);
-//        getContentPane().add(scrollpane, BorderLayout.CENTER);
-//    }
-//
-//    public static void main(String[] args) {
-//        setFrame(new ScrollPaneDemo(), 300, 150);
-//    }
-//
-//    public static void
-//    setFrame(final JFrame frame, final int width, final int height) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                frame.setTitle(frame.getClass().getSimpleName());
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                frame.setSize(width, height);
-//                frame.setVisible(true);
-//            }
-//        });
-//    }
-
 
     public FinanciallyFitGUI() throws InterruptedException, FileNotFoundException {
         super("FinanciallyFit");
@@ -106,15 +69,6 @@ public class FinanciallyFitGUI extends JFrame  {
         initializeNewPanel(panel);
         panel2 = new JPanel();
         initializeNewPanel(panel2);
-
-        // GANG GANG'
-
-        // Panel with BoxLayout
-
-
-
-
-
 
         // BUTTON ADDER STARTER CODE
 
@@ -301,7 +255,35 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
-    private void initializeViewMembers() {
+    private void initializeCheckAttendanceOnDay() {
+        JPanel attendanceCheckerPanel = new JPanel();
+        initializeNewPanel(attendanceCheckerPanel);
+        addLabel("Enter date to check attendance for (YYYY-MM-DD): ",
+                attendanceCheckerPanel, 650, 60, 25);
+        JTextField textBoxName = new JTextField();
+        addEmptyTextBox(attendanceCheckerPanel, textBoxName);
+        JButton button = new JButton("Okay");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                checkAttendance(textBoxName);
+            }
+        });
+        button.setBackground(Color.decode("#262630"));
+        button.setForeground(Color.WHITE);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMinimumSize(new Dimension(100, 60));
+        button.setMaximumSize(new Dimension(100, 60));
+        button.setPreferredSize(new Dimension(100, 60));
+        button.setFont(new Font("Helvectica", Font.BOLD, 15));
+
+        button.setFocusPainted(false);
+        attendanceCheckerPanel.add(button);
+        setContentPane(attendanceCheckerPanel);
+        revalidate();
+        repaint();
+    }
+
+    private void viewMembers() {
 
         List<String> gymMemberNameList = new ArrayList<>();
         for (GymMember m : membersManager.getMembers()) {
@@ -318,10 +300,9 @@ public class FinanciallyFitGUI extends JFrame  {
         gymMembers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         gymMembers.setSelectedIndex(0);
 
+
         initializeNewPanel(detailsPanel);
         updateDetailsPanel(detailsPanel, currentMember, nameScrollPanel);
-
-
 
 
 
@@ -380,8 +361,14 @@ public class FinanciallyFitGUI extends JFrame  {
 
     private void updateDetailsPanel(JPanel detailsPanel, GymMember currentMember, JScrollPane nameScrollPanel) {
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+
         addLabel(currentMember.getName(), detailsPanel, 650, 60, 45);
-        addLabel("", detailsPanel, 650, 60, 25);
+
+
+
+        addLabel("_______________________________________________________________________________________",
+                detailsPanel, 650, 60, 5);
         addLabel("Registration Date: " + currentMember.getRegDate(), detailsPanel, 650, 60, 20);
         addLabel("Total Hours This Month: " + currentMember.getTotalHours(), detailsPanel, 650, 60, 20);
         addLabel("Number Of Days Attended: " + currentMember.getAttendanceCount(), detailsPanel, 650, 60, 20);
@@ -433,6 +420,59 @@ public class FinanciallyFitGUI extends JFrame  {
             displayAppropriateMenu();
         }
     }
+
+    private void checkAttendance(JTextField textBoxDate) {
+        JPanel attendancePanel = new JPanel();
+        initializeNewPanel(attendancePanel);
+        attendancePanel.setLayout(new BoxLayout(attendancePanel, BoxLayout.Y_AXIS));
+
+        List<String> attendanceList = membersManager.returnAttendanceDay(textBoxDate.getText());
+        JList<String> attendanceJList = new JList<String>(attendanceList.toArray(new String[0]));
+        attendanceJList.setFont(new Font("Helvectica", Font.BOLD, 25));
+        JScrollPane attendanceScrollPanel = new JScrollPane(attendanceJList);
+        JPanel exitPanel = new JPanel();
+        exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
+
+        if (attendanceList.isEmpty()) {
+            addLabel("Nobody attended that day.", attendancePanel, 640, 55, 28);
+        } else {
+            attendancePanel.add(attendanceScrollPanel);
+        }
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayAppropriateMenu();
+            }
+        });
+        setUpButton(backButton, 100, 60, 15);
+        backButton.setFocusPainted(false);
+        backButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+        exitPanel.add(Box.createVerticalGlue());
+        exitPanel.add(backButton);
+        exitPanel.add(Box.createVerticalGlue());
+
+        JSplitPane splitPaneVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT, attendancePanel, exitPanel);
+        attendancePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        splitPaneVertical.setAlignmentX(Component.CENTER_ALIGNMENT);
+        splitPaneVertical.setDividerLocation((int) (0.85 * Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+
+        setContentPane(splitPaneVertical);
+        revalidate();
+        repaint();
+
+
+//
+//        exitPanel.add(Box.createVerticalGlue());
+//        exitPanel.add(backButton);
+//        exitPanel.add(Box.createVerticalGlue());
+//        if (membersManager.returnAttendanceDay(textBoxDate.getText()).isEmpty()) {
+//            System.out.println("Nobody attended that day :(");
+//        } else {
+//            System.out.println("List of people who attended that day: " + membersManager.returnAttendanceDay(date));
+//        }
+    }
+
 
     public void addDeregisterMemberButton(Container container) {
         JButton button = new JButton("Deregister Member");
@@ -534,7 +574,7 @@ public class FinanciallyFitGUI extends JFrame  {
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 buttonPlaySoundEffect();
-                initializeViewMembers();
+                viewMembers();
             }
         });
         container.add(button);
@@ -545,6 +585,12 @@ public class FinanciallyFitGUI extends JFrame  {
         JButton button = new JButton("Check Attendance Of Members For Day");
         setUpButton(button, 640, 55, 28);
         button.setFont(new Font("Helvectica", Font.BOLD, 30));
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
+                initializeCheckAttendanceOnDay();
+            }
+        });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
