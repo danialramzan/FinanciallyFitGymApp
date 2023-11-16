@@ -14,6 +14,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.Toolkit;
 
 // Imports from console UI
 import model.FinanciallyFitModel;
@@ -41,6 +44,43 @@ public class FinanciallyFitGUI extends JFrame  {
     private JProgressBar progressBar;
     private JPanel panel;
     private JPanel panel2;
+    private Dimension notificationScreenSize = new Dimension(
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 1.25) ,
+            (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 1.25));
+
+
+//    JScrollPane scrollpane;
+//
+//    public ScrollPaneDemo() {
+//
+//        String teams[] = { "Deccan Chargers", "Kolkata Night Riders",
+//                "Mumbai Indians", "Chennai Super Kings",
+//                "Rajasthan Royals", "Royal Challengers Bangalore",
+//                "Kings XI Punjab", "Pune Warriors India",
+//                "Delhi Daredevils"
+//        };
+//
+//        JList list = new JList(teams);
+//        scrollpane = new JScrollPane(list);
+//        getContentPane().add(scrollpane, BorderLayout.CENTER);
+//    }
+//
+//    public static void main(String[] args) {
+//        setFrame(new ScrollPaneDemo(), 300, 150);
+//    }
+//
+//    public static void
+//    setFrame(final JFrame frame, final int width, final int height) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                frame.setTitle(frame.getClass().getSimpleName());
+//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//                frame.setSize(width, height);
+//                frame.setVisible(true);
+//            }
+//        });
+//    }
+
 
     public FinanciallyFitGUI() throws InterruptedException, FileNotFoundException {
         super("FinanciallyFit");
@@ -100,13 +140,13 @@ public class FinanciallyFitGUI extends JFrame  {
         setVisible(true);
     }
 
-    private void addLabel(String text, Container container) {
+    private void addLabel(String text, Container container, Integer width, Integer height, Integer font) {
         JLabel label = new JLabel(text);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
-        label.setMinimumSize(new Dimension(650, 60));
-        label.setMaximumSize(new Dimension(650, 60));
-        label.setPreferredSize(new Dimension(650, 60));
-        label.setFont(new Font("Helvectica", Font.BOLD, 25));
+        label.setMinimumSize(new Dimension(width, height));
+        label.setMaximumSize(new Dimension(width, height));
+        label.setPreferredSize(new Dimension(width, height));
+        label.setFont(new Font("Helvectica", Font.BOLD, font));
         label.setBackground(Color.decode("#262630"));
         label.setForeground(Color.WHITE);
         container.add(label);
@@ -162,12 +202,29 @@ public class FinanciallyFitGUI extends JFrame  {
         addExitButton(panel2);
     }
 
+    private void buttonPlaySoundEffect() {
+        try {
+            AudioInputStream aui = AudioSystem.getAudioInputStream(new File("data/pluh.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(aui);
+            clip.start();
+        } catch (UnsupportedAudioFileException uafe) {
+            System.out.println("UnsupportedException");
+        } catch (IOException io) {
+            System.out.println("IOException");
+        } catch (LineUnavailableException lue) {
+            System.out.println("LineUnavailableException");
+        }
+    }
+
     private void addRegisterMemberButton(Container container) {
         JButton button = new JButton("Register Member");
         setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
                 initializeRegisterMembers();
+
             }
         });
         container.add(button);
@@ -188,13 +245,13 @@ public class FinanciallyFitGUI extends JFrame  {
     private void initializeRegisterMembers() {
         JPanel regPanel = new JPanel();
         initializeNewPanel(regPanel);
-        addLabel("Enter member name:", regPanel);
+        addLabel("Enter member name:", regPanel, 650, 60, 25);
         JTextField textBoxName = new JTextField();
         addEmptyTextBox(regPanel, textBoxName);
-        addLabel("Enter date of registration (YYYY-mm-dd):", regPanel);
+        addLabel("Enter date of registration (YYYY-mm-dd):", regPanel, 650, 60, 25);
         JTextField textBoxRegDate = new JTextField();
         addEmptyTextBox(regPanel, textBoxRegDate);
-        addLabel("Enter number of days allowed missed:", regPanel);
+        addLabel("Enter number of days allowed missed:", regPanel, 650, 60, 25);
         JTextField textBoxAllowedMiss = new JTextField();
         addEmptyTextBox(regPanel, textBoxAllowedMiss);
         JButton button = new JButton("Okay");
@@ -220,7 +277,7 @@ public class FinanciallyFitGUI extends JFrame  {
     private void initializeDeregisterMembers() {
         JPanel deregPanel = new JPanel();
         initializeNewPanel(deregPanel);
-        addLabel("Enter member name:", deregPanel);
+        addLabel("Enter member name:", deregPanel, 650, 60, 25);
         JTextField textBoxName = new JTextField();
         addEmptyTextBox(deregPanel, textBoxName);
         JButton button = new JButton("Okay");
@@ -243,6 +300,99 @@ public class FinanciallyFitGUI extends JFrame  {
         revalidate();
         repaint();
     }
+
+    private void initializeViewMembers() {
+
+        List<String> gymMemberNameList = new ArrayList<>();
+        for (GymMember m : membersManager.getMembers()) {
+            gymMemberNameList.add(m.getName());
+        }
+
+        GymMember currentMember = membersManager.getMembers().get(0);
+        JList<String> gymMembers = new JList<String>(gymMemberNameList.toArray(new String[0]));
+        JScrollPane nameScrollPanel = new JScrollPane(gymMembers);
+        JPanel detailsPanel = new JPanel();
+        JPanel exitPanel = new JPanel();
+
+        gymMembers.setFont(new Font("Helvectica", Font.BOLD, 25));
+        gymMembers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        gymMembers.setSelectedIndex(0);
+
+        initializeNewPanel(detailsPanel);
+        updateDetailsPanel(detailsPanel, currentMember, nameScrollPanel);
+
+
+
+
+
+        gymMembers.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    // Get the selected index
+                    int selectedIndex = gymMembers.getSelectedIndex();
+                    GymMember indexMember = membersManager.getMembers().get(selectedIndex);
+
+                    // Update detailsPanel based on the selected member
+                    detailsPanel.removeAll();
+                    initializeNewPanel(detailsPanel);
+                    updateDetailsPanel(detailsPanel, indexMember, nameScrollPanel);
+                    revalidate();
+                    repaint();
+                    }
+                }
+            }
+        );
+
+
+        exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
+
+// Center the button both horizontally and vertically
+
+
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                displayAppropriateMenu();
+            }
+        });
+        setUpButton(backButton, 100, 60, 15);
+        backButton.setFocusPainted(false);
+        backButton.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+        exitPanel.add(Box.createVerticalGlue());
+        exitPanel.add(backButton);
+        exitPanel.add(Box.createVerticalGlue());
+
+
+        JSplitPane splitPaneHorizontal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, nameScrollPanel, detailsPanel);
+        JSplitPane splitPaneVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT, splitPaneHorizontal, exitPanel);
+        splitPaneHorizontal.setAlignmentX(Component.CENTER_ALIGNMENT);
+        splitPaneVertical.setAlignmentX(Component.CENTER_ALIGNMENT);
+        splitPaneHorizontal.setOneTouchExpandable(true);
+        splitPaneHorizontal.setDividerLocation(300);
+        splitPaneVertical.setDividerLocation((int) (0.85 * Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+
+        setContentPane(splitPaneVertical);
+        revalidate();
+        repaint();
+    }
+
+    private void updateDetailsPanel(JPanel detailsPanel, GymMember currentMember, JScrollPane nameScrollPanel) {
+        detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        addLabel(currentMember.getName(), detailsPanel, 650, 60, 45);
+        addLabel("", detailsPanel, 650, 60, 25);
+        addLabel("Registration Date: " + currentMember.getRegDate(), detailsPanel, 650, 60, 20);
+        addLabel("Total Hours This Month: " + currentMember.getTotalHours(), detailsPanel, 650, 60, 20);
+        addLabel("Number Of Days Attended: " + currentMember.getAttendanceCount(), detailsPanel, 650, 60, 20);
+        addLabel("Number Of Days Left: " + currentMember.getNumOfDaysLeftInMonth(),
+                detailsPanel, 650, 60, 20);
+
+        nameScrollPanel.setBackground(Color.decode("#262630"));
+        nameScrollPanel.setForeground(Color.WHITE);
+    }
+
+
 
     private void registerMember(JTextField textBoxName, JTextField textBoxRegDate, JTextField textBoxAllowedMiss) {
             GymMember gymMember = new GymMember(textBoxName.getText(), textBoxRegDate.getText(),
@@ -289,6 +439,7 @@ public class FinanciallyFitGUI extends JFrame  {
         setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
                 initializeDeregisterMembers();
             }
         });
@@ -301,6 +452,7 @@ public class FinanciallyFitGUI extends JFrame  {
         setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
                 initializeLogMemberAttendance();
             }
         });
@@ -312,15 +464,15 @@ public class FinanciallyFitGUI extends JFrame  {
         JPanel memberAttendancePanel = new JPanel();
         initializeNewPanel(memberAttendancePanel);
 
-        addLabel("Enter member name:", memberAttendancePanel);
+        addLabel("Enter member name:", memberAttendancePanel, 650, 60, 25);
         JTextField textBoxName = new JTextField();
         addEmptyTextBox(memberAttendancePanel, textBoxName);
 
-        addLabel("Enter date to log attendance (YYYY-mm-dd): ", memberAttendancePanel);
+        addLabel("Enter date to log attendance (YYYY-mm-dd): ", memberAttendancePanel, 650, 60, 25);
         JTextField textBoxLogDate = new JTextField();
         addEmptyTextBox(memberAttendancePanel, textBoxLogDate);
 
-        addLabel("Enter time spent at the gym (hours): ", memberAttendancePanel);
+        addLabel("Enter time spent at the gym (hours): ", memberAttendancePanel, 650, 60, 25);
         JTextField textBoxHours = new JTextField();
         addEmptyTextBox(memberAttendancePanel, textBoxHours);
 
@@ -379,6 +531,12 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addViewMembersButton(Container container) {
         JButton button = new JButton("View Members");
         setUpButton(button, 640, 55, 28);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
+                initializeViewMembers();
+            }
+        });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
@@ -396,6 +554,7 @@ public class FinanciallyFitGUI extends JFrame  {
         setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
                 initializeSave();
             }
         });
@@ -448,6 +607,7 @@ public class FinanciallyFitGUI extends JFrame  {
         setUpButton(button, 640, 55, 28);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
                 initializeLoad();
             }
         });
