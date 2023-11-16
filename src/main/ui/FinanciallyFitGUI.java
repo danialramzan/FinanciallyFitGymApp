@@ -10,7 +10,6 @@ import java.util.*;
 import java.lang.*;
 import java.awt.Color;
 import java.io.FileNotFoundException;
-import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
@@ -29,8 +28,6 @@ import persistence.JsonWriter;
 /*
  * Represents the Gym Interface.
  */
-
-
 public class FinanciallyFitGUI extends JFrame  {
 
     private final ImageIcon imageIconSmall = new ImageIcon("data/logowide.png");
@@ -54,42 +51,26 @@ public class FinanciallyFitGUI extends JFrame  {
         jsonReader = new JsonReader(JSON_FILEPATH);
 
         // Splash screen
-//        showSplashScreen(3600);
-//        Thread.sleep(3600);
+        showSplashScreen(3600);
+        Thread.sleep(3600);
+
 
         // Go fullscreen
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
 
-        // Set border for the content pane
-        ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
 
-        // Initialize Panel with BoxLayout
+        // Initialize the two main screen panels.
         panel = new JPanel();
         initializeNewPanel(panel);
         panel2 = new JPanel();
         initializeNewPanel(panel2);
 
-        // BUTTON ADDER STARTER CODE
-
-
-//        JButton btn = new JButton("SOMETHING");
-//        btn3.addActionListener(new ActionListener() {
-//                    public void actionPerformed(ActionEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//        add(btn3);
-//        btn.setBackground(Color.decode("#262630"));
-//         btn.setForeground(Color.WHITE);
 
         initializeMenus();
         displayAppropriateMenu();
 
 
-        // GANG GANG
-
-        // Set the panel as the content pane
         setContentPane(panel);
         setVisible(true);
     }
@@ -121,7 +102,7 @@ public class FinanciallyFitGUI extends JFrame  {
     private void initializeNewPanel(Container container) {
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
         container.setBackground(Color.decode("#262630"));
-        container.add(Box.createRigidArea(new Dimension(0, 10)));
+        container.add(Box.createRigidArea(new Dimension(0, 23)));
         JLabel logo = new JLabel(imageIconSmall);
         logo.setBackground(Color.decode("#262630"));
         logo.setForeground(Color.WHITE);
@@ -295,6 +276,7 @@ public class FinanciallyFitGUI extends JFrame  {
         JScrollPane nameScrollPanel = new JScrollPane(gymMembers);
         JPanel detailsPanel = new JPanel();
         JPanel exitPanel = new JPanel();
+        exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
 
         gymMembers.setFont(new Font("Helvectica", Font.BOLD, 25));
         gymMembers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -310,11 +292,9 @@ public class FinanciallyFitGUI extends JFrame  {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    // Get the selected index
                     int selectedIndex = gymMembers.getSelectedIndex();
                     GymMember indexMember = membersManager.getMembers().get(selectedIndex);
 
-                    // Update detailsPanel based on the selected member
                     detailsPanel.removeAll();
                     initializeNewPanel(detailsPanel);
                     updateDetailsPanel(detailsPanel, indexMember, nameScrollPanel);
@@ -324,11 +304,6 @@ public class FinanciallyFitGUI extends JFrame  {
                 }
             }
         );
-
-
-        exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
-
-// Center the button both horizontally and vertically
 
 
         JButton backButton = new JButton("Back");
@@ -460,17 +435,6 @@ public class FinanciallyFitGUI extends JFrame  {
         setContentPane(splitPaneVertical);
         revalidate();
         repaint();
-
-
-//
-//        exitPanel.add(Box.createVerticalGlue());
-//        exitPanel.add(backButton);
-//        exitPanel.add(Box.createVerticalGlue());
-//        if (membersManager.returnAttendanceDay(textBoxDate.getText()).isEmpty()) {
-//            System.out.println("Nobody attended that day :(");
-//        } else {
-//            System.out.println("List of people who attended that day: " + membersManager.returnAttendanceDay(date));
-//        }
     }
 
 
@@ -564,8 +528,66 @@ public class FinanciallyFitGUI extends JFrame  {
     public void addCalculateMonthlyBillButton(Container container) {
         JButton button = new JButton("Calculate Monthly Bill");
         setUpButton(button, 640, 55, 28);
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                buttonPlaySoundEffect();
+                initializeCalculateMonthlyBill();
+            }
+        });
         container.add(button);
         container.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+
+    private void initializeCalculateMonthlyBill() {
+        JPanel monthlyBillPanel = new JPanel();
+        initializeNewPanel(monthlyBillPanel);
+        addLabel("Enter member name: ", monthlyBillPanel, 650, 60, 25);
+        JTextField textBoxName = new JTextField();
+        addEmptyTextBox(monthlyBillPanel, textBoxName);
+        JButton button = new JButton("Okay");
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                calculateMonthlyBill(textBoxName);
+            }
+        });
+        button.setBackground(Color.decode("#262630"));
+        button.setForeground(Color.WHITE);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        button.setMinimumSize(new Dimension(100, 60));
+        button.setMaximumSize(new Dimension(100, 60));
+        button.setPreferredSize(new Dimension(100, 60));
+        button.setFont(new Font("Helvectica", Font.BOLD, 15));
+        button.setFocusPainted(false);
+        monthlyBillPanel.add(button);
+
+        setContentPane(monthlyBillPanel);
+        revalidate();
+        repaint();
+    }
+
+    private void calculateMonthlyBill(JTextField textBoxName) {
+        String returnstring = "Member not found.";
+
+        double result = financiallyFitModel.calculateMonthlyBillPublic(
+                membersManager.getMembers(), textBoxName.getText());
+        if (result != -1) {
+            returnstring = "Monthly Bill for " + textBoxName.getText() +
+                    ": $" + result + "\nNote: attending the gym more often will reduce your total amount due ";
+        }
+
+        int option = JOptionPane.showOptionDialog(
+                null, returnstring,
+                "Information",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                UIManager.getIcon("OptionPane.informationIcon"),
+                new Object[]{"OK"},
+                "OK");
+
+        if (option == 0) {
+            displayAppropriateMenu();
+        }
+
     }
 
     public void addViewMembersButton(Container container) {
@@ -625,28 +647,6 @@ public class FinanciallyFitGUI extends JFrame  {
                 JOptionPane.INFORMATION_MESSAGE,
                 UIManager.getIcon("OptionPane.informationIcon"));
     }
-
-    //    private void saveMembersManager() {
-//        try {
-//            jsonWriter.open();
-//            jsonWriter.write(membersManager);
-//            jsonWriter.close();
-//            System.out.println("Successfully saved instance to " + JSON_FILEPATH);
-//        } catch (FileNotFoundException e) {
-//            System.out.println("Unable to write to file: " + JSON_FILEPATH);
-//        }
-//    }
-//
-//    // MODIFIES: this
-//    // EFFECTS: loads MembersManager instance from file
-//    private void loadMembersManager() {
-//        try {
-//            membersManager = jsonReader.read();
-//            System.out.println("Successfully loaded instance from " + JSON_FILEPATH);
-//        } catch (IOException e) {
-//            System.out.println("Unable to read from file: " + JSON_FILEPATH);
-//        }
-//    }
 
     public void addLoadButton(Container container) {
         JButton button = new JButton("Load");
@@ -719,93 +719,7 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
 
-//    public FinanciallyFitGUI() throws InterruptedException, FileNotFoundException {
-//        super("FinanciallyFit");
-//        setDefaultCloseOperation(EXIT_ON_CLOSE);
-//        panel = new JPanel();
-//
-//        jsonWriter = new JsonWriter(JSON_FILEPATH);
-//        jsonReader = new JsonReader(JSON_FILEPATH);
-//
-//        // Splash screen
-//        showSplashScreen(3600);
-//        Thread.sleep(3600);
-//
-//        // Go fullscreen
-//        setExtendedState(JFrame.MAXIMIZED_BOTH);
-//        setUndecorated(true);
-//        ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
-//        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-//
-//
-//        //Add Logo
-//        JLabel logo = new JLabel(imageIconSmall);
-//        logo.setBackground(Color.decode("#262630"));
-//        logo.setForeground(Color.WHITE);
-//        panel.add(logo);
-//
-//        pack();
-//
-//
-//
-//
-////        JButton btn1 = new JButton("Register Member");
-////        btn1.addActionListener(new ActionListener() {
-////            public void actionPerformed(ActionEvent e) {
-////                System.exit(0);
-////            }
-////        });
-////        add(btn1);
-////        btn1.setBackground(Color.decode("#262630"));
-////        btn1.setForeground(Color.WHITE);
-//
-//
-//        // BUTTON ADDER STARTER CODE
-//
-//        //JButton btn3 = new JButton("SOMETHING");
-//        //btn3.addActionListener(new ActionListener() {
-//        //            public void actionPerformed(ActionEvent e) {
-//        //                System.exit(0);
-//        //            }
-//        //        });
-//        //add(btn3);
-//        //btn.setBackground(Color.decode("#262630"));
-//        // btn.setForeground(Color.WHITE);
-//
-////        JLabel logo = new JLabel(imageIconSmall);
-////        add(logo);
-////        logo.setBackground(Color.decode("#262630"));
-////        logo.setForeground(Color.WHITE);
-////
-////
-////
-////
-////
-////
-////        //btn.addActionListener(this);
-////        label = new JLabel("flag");
-////        field = new JTextField(5);
-////        add(field);
-////        add(label);
-////        pack();
-////        setLocationRelativeTo(null);
-////        setResizable(false);
-////
-//        getContentPane().setBackground(Color.decode("#262630"));
-////        label.setForeground(Color.WHITE);
-////        label.setBackground(Color.decode("#262630"));
-////
-//        setVisible(true);
-//    }
-
-
-
-
-
-
-
-
-    // Display a splash screen for the specified duration in milliseconds
+    // Displays the splash screen
     private void showSplashScreen(int duration) {
 
         ImageIcon imageIcon = logo;
@@ -872,205 +786,3 @@ public class FinanciallyFitGUI extends JFrame  {
         timer.start();
     }
 }
-
-
-
-
-
-
-
-
-
-//public class FinanciallyFitGUI {
-//
-//    private static final String JSON_FILEPATH = "./data/membersManager.json";
-//
-//    private FinanciallyFitModel financiallyFitModel = new FinanciallyFitModel();
-//    private MembersManager membersManager = new MembersManager();
-//    private JsonWriter jsonWriter;
-//    private JsonReader jsonReader;
-//
-//    // EFFECTS: Starts the User Interface
-//    public FinanciallyFitGUI() throws FileNotFoundException {
-//
-//        jsonWriter = new JsonWriter(JSON_FILEPATH);
-//        jsonReader = new JsonReader(JSON_FILEPATH);
-//
-//        while (true) {
-//            Scanner scanner = new Scanner(System.in);
-//
-//            if (membersManager.getSize() == 0) {
-//                displayMenu1();
-//                System.out.print("Please enter your choice: ");
-//                String choice = scanner.nextLine();
-//                processInput1(choice, scanner);
-//            } else {
-//                displayMenu2();
-//                System.out.print("Please enter your choice: ");
-//                String choice = scanner.nextLine();
-//                processInput2(choice, scanner);
-//            }
-//        }
-//    }
-//
-//    // EFFECTS: processes inputs for the primary menu
-//    private void processInput1(String choice, Scanner scanner) {
-//        if (choice.equals("1") || choice.equalsIgnoreCase("r")) {
-//            registerMember(scanner);
-//
-//        } else if (choice.equals("2") || choice.equalsIgnoreCase("sa")) {
-//            saveMembersManager();
-//
-//        } else if (choice.equals("3") || choice.equalsIgnoreCase("lo")) {
-//            loadMembersManager();
-//
-//        } else if (choice.equals("4") || choice.equalsIgnoreCase("e")) {
-//            exit();
-//
-//        } else {
-//            System.out.println("Invalid choice. Please try again.");
-//        }
-//    }
-//
-//    // EFFECTS: processes inputs for the secondary menu
-//    private void processInput2(String choice, Scanner scanner) {
-//
-//        if (choice.equals("1") || choice.equalsIgnoreCase("r")) {
-//            registerMember(scanner);
-//
-//        } else if (choice.equals("2") || choice.equalsIgnoreCase("d")) {
-//            deregisterMember(scanner);
-//
-//        } else if (choice.equals("3") || choice.equalsIgnoreCase("l")) {
-//            logMemberAttendance(scanner);
-//
-//        } else if (choice.equals("4") || choice.equalsIgnoreCase("c")) {
-//            calculateMonthlyBillUI(scanner);
-//
-//        } else if (choice.equals("5") || choice.equalsIgnoreCase("v")) {
-//            viewMembers();
-//
-//        } else if (choice.equals("6") || choice.equalsIgnoreCase("a")) {
-//            attendanceChecker(scanner);
-//
-//        } else if (choice.equals("7") || choice.equalsIgnoreCase("sa")) {
-//            saveMembersManager();
-//
-//        } else if (choice.equals("8") || choice.equalsIgnoreCase("lo")) {
-//            loadMembersManager();
-//
-//        } else if (choice.equals("9") || choice.equalsIgnoreCase("e")) {
-//            exit();
-//
-//        } else {
-//            System.out.println("Invalid choice. Please try again.");
-//        }
-//    }
-//
-
-//
-//    // EFFECTS: Uses the returnAttendanceDay method to print a list of people who attended on a certain day
-//    private void attendanceChecker(Scanner scanner) {
-//        System.out.print("Enter date to check attendance for (YYYY-MM-DD): ");
-//        String date = scanner.nextLine();
-//        if (membersManager.returnAttendanceDay(date).isEmpty()) {
-//            System.out.println("Nobody attended that day :(");
-//        } else {
-//            System.out.println("List of people who attended that day: " + membersManager.returnAttendanceDay(date));
-//        }
-//    }
-//
-//    // EFFECTS: prints out a list of members along with their regDate, Total Hours, and Days Attended
-//    private void viewMembers() {
-//
-//        if (membersManager.getMembers().isEmpty()) {
-//            System.out.println("No members are registered!");
-//        } else {
-//            System.out.println("_______________________________________________________________________");
-//            System.out.println("Member Name     Registration Date    Total Hours    Days Attended");
-//            for (GymMember m : membersManager.getMembers()) {
-//                System.out.println(m.getName() + "       " + m.getRegDate() + "                  "
-//                        + m.getTotalHours() + "           " + m.getAttendanceCount() + "/"
-//                        + m.getNumOfDaysLeftInMonth());
-//
-//            }
-//        }
-//    }
-//
-//
-//
-//    // EFFECTS: Uses the calculateMonthlyBillPublic method to print a monthly bill for the user.
-//    private void calculateMonthlyBillUI(Scanner scanner) {
-//        System.out.print("Enter member name: ");
-//        String billMemberName = scanner.nextLine();
-//        double result = financiallyFitModel.calculateMonthlyBillPublic(membersManager.getMembers(), billMemberName);
-//        if (result != -1) {
-//            System.out.println("Monthly Bill for " + billMemberName + ": $" + result);
-//            System.out.println("Note that as you attend the gym more often your total amount due will go down");
-//        } else {
-//            System.out.println("Member not found.");
-//        }
-//    }
-//
-//
-//
-//    // REQUIRES: inputs must respect REQUIRES of logAttendance in GymMember
-//    // MODIFIES: GymMember
-//    // EFFECTS: logs the attendance of the Member
-//    private void logMemberAttendance(Scanner scanner) {
-//        System.out.print("Enter member name: ");
-//        String memberName = scanner.nextLine();
-//        System.out.println("Enter date to log attendance for member " + memberName + " (YYYY-mm-dd):");
-//        String logDate = scanner.nextLine();
-//
-//        GymMember foundMember = financiallyFitModel.findGymMemberPublic(membersManager.getMembers(), memberName);
-//
-//        if (foundMember != null) {
-//            System.out.print("Enter time spent at the gym (hours): ");
-//            double hours = scanner.nextDouble();
-//            foundMember.logAttendance(hours, logDate);
-//            System.out.println(hours + " hours logged for " + memberName);
-//        } else {
-//            System.out.println("Member not found.");
-//        }
-//    }
-//
-//
-//    // Registers a member by constructing a GymMember object and adding it to membersManager.
-//    // REQUIRES: Inputs need to respect REQUIRES of GymMember in GymMember.
-//    // MODIFIES: GymMember
-//    // EFFECTS: creates a GymMember with a username, allowed missed days,
-//    // base membership cost, and an attendance log, (amongst another things)
-//    private void registerMember(Scanner scanner) {
-//        System.out.print("Enter member name: ");
-//        String name = scanner.nextLine();
-//        System.out.print("Enter date of registration (YYYY-mm-dd): ");
-//        String regDate = scanner.next();
-//        System.out.print("Enter number of days allowed missed: ");
-//        Integer allowedMiss = scanner.nextInt();
-//
-//
-//        GymMember gymMember = new GymMember(name, regDate, allowedMiss);
-//        membersManager.addMember(gymMember);
-//        System.out.println(name + " has been registered.");
-//    }
-//
-//
-//    // MODIFIES: membersManager
-//    // EFFECTS: removes a member from the membersManager
-//    // object using the removeMember method.
-//    private void deregisterMember(Scanner scanner) {
-//        System.out.print("Enter member name: ");
-//        String name = scanner.nextLine();
-//        GymMember foundMember = financiallyFitModel.findGymMemberPublic(membersManager.getMembers(), name);
-//
-//        if (foundMember != null) {
-//            membersManager.removeMember(foundMember);
-//            System.out.println(name + " has been deregistered.");
-//        } else {
-//            System.out.println("Member not found.");
-//        }
-//
-//    }
-
-//}
