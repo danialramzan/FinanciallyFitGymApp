@@ -332,7 +332,6 @@ public class FinanciallyFitGUI extends JFrame  {
     private void updateDetailsPanel(JPanel detailsPanel, GymMember currentMember, JScrollPane nameScrollPanel) {
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-
         addLabel(currentMember.getName(), detailsPanel, 650, 60, 45);
         addLabel("_______________________________________________________________________________________",
                 detailsPanel, 650, 60, 5);
