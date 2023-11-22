@@ -77,6 +77,7 @@ public class FinanciallyFitGUI extends JFrame  {
         setVisible(true);
     }
 
+    // MODIFIES: container
     // EFFECTS: Helper Function to add a text box with given font and size
     private void addLabel(String text, Container container, Integer width, Integer height, Integer font) {
         JLabel label = new JLabel(text);
@@ -90,6 +91,7 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(label);
     }
 
+    // MODIFIES: container
     // EFFECTS: Helper Function to initialize and add an empty text box
     private void addEmptyTextBox(Container container, JTextField textBox) {
         textBox.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -103,6 +105,7 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 20)));
     }
 
+    // MODIFIES: container
     // EFFECTS: Helper Function to initialize a new panel.
     private void initializeNewPanel(Container container) {
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
@@ -127,6 +130,7 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
+    // MODIFIES: panel, panel2
     // EFFECTS: Helper Function to initialize both panels
     private void initializeMenus() {
         addRegisterMemberButton(panel);
@@ -254,24 +258,14 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
-    @SuppressWarnings("methodlength")
+
     private void viewMembers() {
-
-        List<String> gymMemberNameList = new ArrayList<>();
-        for (GymMember m : membersManager.getMembers()) {
-            gymMemberNameList.add(m.getName());
-        }
-
         GymMember currentMember = membersManager.getMembers().get(0);
-        JList<String> gymMembers = new JList<String>(gymMemberNameList.toArray(new String[0]));
+        JList gymMembers = setUpGymMembersJList();
+
         JScrollPane nameScrollPanel = new JScrollPane(gymMembers);
         JPanel detailsPanel = new JPanel();
-        JPanel exitPanel = new JPanel();
-        exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
 
-        gymMembers.setFont(new Font("Helvectica", Font.BOLD, 25));
-        gymMembers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        gymMembers.setSelectedIndex(0);
 
         initializeNewPanel(detailsPanel);
         updateDetailsPanel(detailsPanel, currentMember, nameScrollPanel);
@@ -294,22 +288,36 @@ public class FinanciallyFitGUI extends JFrame  {
         );
 
 
+        finalSetUpPanel(new JButton("Back"), nameScrollPanel, detailsPanel);
+    }
 
-        JButton backButton = new JButton("Back");
+    private JList setUpGymMembersJList() {
+        List<String> gymMemberNameList = new ArrayList<>();
+        for (GymMember m : membersManager.getMembers()) {
+            gymMemberNameList.add(m.getName());
+        }
+
+        JList<String> gymMembers = new JList<String>(gymMemberNameList.toArray(new String[0]));
+        gymMembers.setFont(new Font("Helvectica", Font.BOLD, 25));
+        gymMembers.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        gymMembers.setSelectedIndex(0);
+        return gymMembers;
+
+    }
+
+
+
+
+    private void finalSetUpPanel(JButton backButton, JScrollPane nameScrollPanel, JPanel detailsPanel) {
+        setUpButton(backButton, 100, 60, 15);
+        backButton.setAlignmentY(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 displayAppropriateMenu();
             }
         });
 
-        setUpButton(backButton, 100, 60, 15);
-        backButton.setAlignmentY(Component.CENTER_ALIGNMENT);
-
-        exitPanel.add(Box.createVerticalGlue());
-        exitPanel.add(backButton);
-        exitPanel.add(Box.createVerticalGlue());
-
-
+        JPanel exitPanel = initializeExitPanel(backButton);
         JSplitPane splitPaneVertical = initializeVerticalPane(nameScrollPanel, detailsPanel, exitPanel);
 
         setContentPane(splitPaneVertical);
@@ -388,24 +396,16 @@ public class FinanciallyFitGUI extends JFrame  {
         }
     }
 
-    @SuppressWarnings("methodlength")
     private void checkAttendance(JTextField textBoxDate) {
         JPanel attendancePanel = new JPanel();
         initializeNewPanel(attendancePanel);
         attendancePanel.setLayout(new BoxLayout(attendancePanel, BoxLayout.Y_AXIS));
-
         List<String> attendanceList = membersManager.returnAttendanceDay(textBoxDate.getText());
         JList<String> attendanceJList = new JList<String>(attendanceList.toArray(new String[0]));
         attendanceJList.setFont(new Font("Helvectica", Font.BOLD, 25));
         JScrollPane attendanceScrollPanel = new JScrollPane(attendanceJList);
-        JPanel exitPanel = new JPanel();
-        exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
 
-        if (attendanceList.isEmpty()) {
-            addLabel("Nobody attended that day.", attendancePanel, 640, 55, 28);
-        } else {
-            attendancePanel.add(attendanceScrollPanel);
-        }
+        attendancePanelHandler(attendanceList, attendancePanel, attendanceScrollPanel);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -416,18 +416,38 @@ public class FinanciallyFitGUI extends JFrame  {
         setUpButton(backButton, 100, 60, 15);
         backButton.setAlignmentY(Component.CENTER_ALIGNMENT);
 
-        exitPanel.add(Box.createVerticalGlue());
-        exitPanel.add(backButton);
-        exitPanel.add(Box.createVerticalGlue());
-
-        JSplitPane splitPaneVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT, attendancePanel, exitPanel);
-        attendancePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        splitPaneVertical.setAlignmentX(Component.CENTER_ALIGNMENT);
-        splitPaneVertical.setDividerLocation((int) (0.85 * Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+        JPanel exitPanel = initializeExitPanel(backButton);
+        JSplitPane splitPaneVertical = getSplitPaneVertical(attendancePanel, exitPanel);
 
         setContentPane(splitPaneVertical);
         revalidate();
         repaint();
+    }
+
+    private void attendancePanelHandler(List<String> attendanceList,
+                                        JPanel attendancePanel, JScrollPane attendanceScrollPanel) {
+        if (attendanceList.isEmpty()) {
+            addLabel("Nobody attended that day.", attendancePanel, 640, 55, 28);
+        } else {
+            attendancePanel.add(attendanceScrollPanel);
+        }
+    }
+
+    private static JSplitPane getSplitPaneVertical(JPanel attendancePanel, JPanel exitPanel) {
+        JSplitPane splitPaneVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT, attendancePanel, exitPanel);
+        attendancePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        splitPaneVertical.setAlignmentX(Component.CENTER_ALIGNMENT);
+        splitPaneVertical.setDividerLocation((int) (0.85 * Toolkit.getDefaultToolkit().getScreenSize().getHeight()));
+        return splitPaneVertical;
+    }
+
+    private static JPanel initializeExitPanel(JButton backButton) {
+        JPanel exitPanel = new JPanel();
+        exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
+        exitPanel.add(Box.createVerticalGlue());
+        exitPanel.add(backButton);
+        exitPanel.add(Box.createVerticalGlue());
+        return exitPanel;
     }
 
 
@@ -727,12 +747,7 @@ public class FinanciallyFitGUI extends JFrame  {
     // Simulate a loading process
     @SuppressWarnings("methodlength")
     private void simulateLoading() {
-        Random random = new Random();
-        List<Integer> timerList = new ArrayList<>();
-        int randomValue1 = random.nextInt(99) + 1;
-        int randomValue2 = random.nextInt(99) + 1;
-        timerList.add(randomValue1);
-        timerList.add(randomValue2);
+        List<Integer> timerList = initiateTimerList();
 
         Timer timer = new Timer(20, new ActionListener() {
             int progress = 0;
@@ -762,5 +777,15 @@ public class FinanciallyFitGUI extends JFrame  {
         });
 
         timer.start();
+    }
+
+    private static List<Integer> initiateTimerList() {
+        Random random = new Random();
+        List<Integer> timerList = new ArrayList<>();
+        int randomValue1 = random.nextInt(99) + 1;
+        int randomValue2 = random.nextInt(99) + 1;
+        timerList.add(randomValue1);
+        timerList.add(randomValue2);
+        return timerList;
     }
 }
