@@ -164,6 +164,7 @@ public class FinanciallyFitGUI extends JFrame  {
         }
     }
 
+    // MODIFIES: container
     // EFFECTS: Helper Function to initialize and add an empty text box
     private void addRegisterMemberButton(Container container) {
         JButton button = new JButton("Register Member");
@@ -179,6 +180,7 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // MODIFIES: button
     // EFFECTS: Helper Function to initialize a new button
     private static void setUpButton(JButton button, Integer width, Integer height, Integer fontSize) {
         button.setMinimumSize(new Dimension(width, height));

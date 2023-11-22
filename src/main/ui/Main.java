@@ -15,7 +15,7 @@ public class Main {
         } catch (FileNotFoundException e) {
             System.out.println("Unable to run application: file not found");
         } catch (InterruptedException e) {
-        System.out.println("Thread interrupted while running");
-    }
+            System.out.println("Thread interrupted while running");
+        }
     }
 }
