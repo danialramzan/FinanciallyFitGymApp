@@ -193,6 +193,9 @@ public class FinanciallyFitGUI extends JFrame  {
         button.setForeground(Color.WHITE);
     }
 
+
+
+    // MODIFIES: FinanciallyFitGUI
     // EFFECTS: Initializes Register members panel and displays it
     private void initializeRegisterMembers() {
         JPanel regPanel = new JPanel();
@@ -219,6 +222,7 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
+    // MODIFIES: this
     // EFFECTS: Initializes Deregister members panel and displays it
     private void initializeDeregisterMembers() {
         JPanel deregPanel = new JPanel();
@@ -239,6 +243,7 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
+    // MODIFIES: this
     // EFFECTS: initializes Attendance Checking panel and displays it
     private void initializeCheckAttendanceOnDay() {
         JPanel attendanceCheckerPanel = new JPanel();
@@ -260,7 +265,8 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: sets up the viewMembers action
     private void viewMembers() {
         GymMember currentMember = membersManager.getMembers().get(0);
         JList gymMembers = setUpGymMembersJList();
@@ -293,6 +299,7 @@ public class FinanciallyFitGUI extends JFrame  {
         finalSetUpPanel(new JButton("Back"), nameScrollPanel, detailsPanel);
     }
 
+    // EFFECTS: sets up the gym Members JList from membersManager
     private JList setUpGymMembersJList() {
         List<String> gymMemberNameList = new ArrayList<>();
         for (GymMember m : membersManager.getMembers()) {
@@ -308,8 +315,8 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
 
-
-
+    // MODIFIES: backButton,
+    // EFFECTS: utility code for viewMembers
     private void finalSetUpPanel(JButton backButton, JScrollPane nameScrollPanel, JPanel detailsPanel) {
         setUpButton(backButton, 100, 60, 15);
         backButton.setAlignmentY(Component.CENTER_ALIGNMENT);
@@ -327,6 +334,7 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
+    // EFFECTS: utility code for viewMembers
     private static JSplitPane initializeVerticalPane(JScrollPane nameScrollPanel,
                                                      JPanel detailsPanel, JPanel exitPanel) {
         JSplitPane splitPaneHorizontal = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, nameScrollPanel, detailsPanel);
@@ -339,6 +347,8 @@ public class FinanciallyFitGUI extends JFrame  {
         return splitPaneVertical;
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the information on the viewMembers panel
     private void updateDetailsPanel(JPanel detailsPanel, GymMember currentMember, JScrollPane nameScrollPanel) {
         detailsPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
@@ -359,6 +369,8 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: sets up the registerMembers action
     private void registerMember(JTextField textBoxName, JTextField textBoxRegDate, JTextField textBoxAllowedMiss) {
         GymMember gymMember = new GymMember(textBoxName.getText(), textBoxRegDate.getText(),
                 Integer.valueOf(textBoxAllowedMiss.getText()));
@@ -376,6 +388,8 @@ public class FinanciallyFitGUI extends JFrame  {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets up the deregisterMembers action
     private void deregisterMember(JTextField textBoxName) {
         String returnstring = "Member not found.";
         GymMember foundMember =
@@ -398,6 +412,9 @@ public class FinanciallyFitGUI extends JFrame  {
         }
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: sets up the checkAttendance action
     private void checkAttendance(JTextField textBoxDate) {
         JPanel attendancePanel = new JPanel();
         initializeNewPanel(attendancePanel);
@@ -426,6 +443,8 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
+    // MODIFIES: attendancePanel
+    // EFFECTS: structures the attendancePanel appropriately
     private void attendancePanelHandler(List<String> attendanceList,
                                         JPanel attendancePanel, JScrollPane attendanceScrollPanel) {
         if (attendanceList.isEmpty()) {
@@ -435,6 +454,7 @@ public class FinanciallyFitGUI extends JFrame  {
         }
     }
 
+    // EFFECTS: returns a verticalPanel for viewMembers.
     private static JSplitPane getSplitPaneVertical(JPanel attendancePanel, JPanel exitPanel) {
         JSplitPane splitPaneVertical = new JSplitPane(JSplitPane.VERTICAL_SPLIT, attendancePanel, exitPanel);
         attendancePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -443,6 +463,8 @@ public class FinanciallyFitGUI extends JFrame  {
         return splitPaneVertical;
     }
 
+
+    // EFFECTS: initializes Exit Panel
     private static JPanel initializeExitPanel(JButton backButton) {
         JPanel exitPanel = new JPanel();
         exitPanel.setLayout(new BoxLayout(exitPanel, BoxLayout.Y_AXIS));
@@ -453,6 +475,8 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
 
+    // MODIFIES: container
+    // EFFECTS : adds the button to the panel
     public void addDeregisterMemberButton(Container container) {
         JButton button = new JButton("Deregister Member");
         setUpButton(button, 640, 55, 28);
@@ -466,6 +490,8 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // MODIFIES: container
+    // EFFECTS : adds the button to the panel
     public void addLogMemberAttendanceButton(Container container) {
         JButton button = new JButton("Log Member Attendance");
         setUpButton(button, 640, 55, 28);
@@ -479,6 +505,9 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+
+    // MODIFIES: this
+    // EFFECTS: initializes Log Member Attendance panel and displays it
     public void initializeLogMemberAttendance() {
         JPanel memberAttendancePanel = new JPanel();
         initializeNewPanel(memberAttendancePanel);
@@ -510,6 +539,11 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
+    // Registers a member by constructing a GymMember object and adding it to membersManager.
+    // REQUIRES: Inputs need to respect REQUIRES of GymMember in GymMember.
+    // MODIFIES: GymMember
+    // EFFECTS: sets up the logMemberAttendance action (creates a GymMember with a username, allowed missed days,
+    // base membership cost, and an attendance log, (amongst another things))
     public void logMemberAttendance(JTextField textBoxName, JTextField textBoxLogDate, JTextField textBoxHours) {
 
         String returnstring = "Member not found.";
@@ -536,6 +570,8 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
 
+    // MODIFIES: container
+    // EFFECTS: adds the CalculateMonthlyBill button to the container
     public void addCalculateMonthlyBillButton(Container container) {
         JButton button = new JButton("Calculate Monthly Bill");
         setUpButton(button, 640, 55, 28);
@@ -549,6 +585,8 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes Calculate Monthly Bill Panel and displays it
     private void initializeCalculateMonthlyBill() {
         JPanel monthlyBillPanel = new JPanel();
         initializeNewPanel(monthlyBillPanel);
@@ -569,6 +607,8 @@ public class FinanciallyFitGUI extends JFrame  {
         repaint();
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets up the CalculateMonthlyBill action
     private void calculateMonthlyBill(JTextField textBoxName) {
         String returnstring = "Member not found.";
 
@@ -592,6 +632,8 @@ public class FinanciallyFitGUI extends JFrame  {
 
     }
 
+    // MODIFIES: container
+    // EFFECTS: adds the addViewMembers button to the container
     public void addViewMembersButton(Container container) {
         JButton button = new JButton("View Members");
         setUpButton(button, 640, 55, 28);
@@ -605,6 +647,8 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // MODIFIES: container
+    // EFFECTS: adds the CheckAttendanceOfMembersForDay button to the container
     public void addCheckAttendanceOfMembersForDayButton(Container container) {
         JButton button = new JButton("Check Attendance Of Members For Day");
         setUpButton(button, 640, 55, 28);
@@ -619,6 +663,8 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // MODIFIES: container
+    // EFFECTS: adds the addSave button to the container
     public void addSaveButton(Container container) {
         JButton button = new JButton("Save");
         setUpButton(button, 640, 55, 28);
@@ -632,6 +678,7 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // EFFECTS: saves the current MembersManager instance to file and displays the result.
     private void initializeSave() {
         String returnString;
         try {
@@ -649,6 +696,8 @@ public class FinanciallyFitGUI extends JFrame  {
                 UIManager.getIcon("OptionPane.informationIcon"));
     }
 
+    // MODIFIES: container
+    // EFFECTS: adds the addLoad button to the container
     public void addLoadButton(Container container) {
         JButton button = new JButton("Load");
         setUpButton(button, 640, 55, 28);
@@ -662,6 +711,7 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // EFFECTS: loads the current MembersManager instance from file and displays the result.
     private void initializeLoad() {
         String returnString;
         try {
@@ -694,6 +744,8 @@ public class FinanciallyFitGUI extends JFrame  {
         container.add(Box.createRigidArea(new Dimension(0, 10)));
     }
 
+    // MODIFIES: this
+    // EFFECTS: exits the program
     private static void initializeExit() {
         try {
             AudioInputStream aui =
@@ -717,7 +769,7 @@ public class FinanciallyFitGUI extends JFrame  {
     }
 
 
-    // Displays the splash screen
+    // EFFECTS: Displays the splash screen
     private void showSplashScreen(int duration) {
 
         ImageIcon imageIcon = logo;
@@ -746,8 +798,7 @@ public class FinanciallyFitGUI extends JFrame  {
         timer.start();
     }
 
-    // Simulate a loading process
-    @SuppressWarnings("methodlength")
+    // EFFECTS:  simulates a loading process
     private void simulateLoading() {
         List<Integer> timerList = initiateTimerList();
 
@@ -759,21 +810,13 @@ public class FinanciallyFitGUI extends JFrame  {
 
                 if (progress < 100) {
                     if (timerList.contains(progress)) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException ex) {
-                            throw new RuntimeException(ex);
-                        }
+                        threadSleepTime(100);
                     }
                     progress++;
                     progressBar.setValue(progress);
                 } else {
                     ((Timer) e.getSource()).stop();
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    threadSleepTime(500);
                 }
             }
         });
@@ -781,6 +824,19 @@ public class FinanciallyFitGUI extends JFrame  {
         timer.start();
     }
 
+    // EFFECTS: ##(utility : simulateLoading)##
+    // makes the tread sleep for a given amount of time.
+    private static void threadSleepTime(int milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+
+    // EFFECTS: ##(utility : simulateLoading)##
+    // initializes the list used to induce random pauses in the loading list.
     private static List<Integer> initiateTimerList() {
         Random random = new Random();
         List<Integer> timerList = new ArrayList<>();
