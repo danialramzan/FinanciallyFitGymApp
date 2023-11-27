@@ -18,6 +18,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.Toolkit;
 
 // Imports from console UI
+import model.Event;
+import model.EventLog;
 import model.FinanciallyFitModel;
 import model.GymMember;
 import model.MembersManager;
@@ -423,7 +425,6 @@ public class FinanciallyFitGUI extends JFrame  {
         JList<String> attendanceJList = new JList<String>(attendanceList.toArray(new String[0]));
         attendanceJList.setFont(new Font("Helvectica", Font.BOLD, 25));
         JScrollPane attendanceScrollPanel = new JScrollPane(attendanceJList);
-
         attendancePanelHandler(attendanceList, attendancePanel, attendanceScrollPanel);
 
         JButton backButton = new JButton("Back");
@@ -766,6 +767,12 @@ public class FinanciallyFitGUI extends JFrame  {
             throw new RuntimeException(ex);
         }
         System.exit(0);
+        printLog(EventLog.getInstance());
+        //lp.printLog(EventLog.getInstance())
+    }
+
+    private static void printLog(EventLog el) {
+        MembersManager.printLog(el);
     }
 
 

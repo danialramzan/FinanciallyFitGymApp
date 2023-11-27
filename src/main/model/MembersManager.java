@@ -31,6 +31,11 @@ public class MembersManager implements Writable {
     // EFFECTS: adds a GymMember to the MemberManager object. (X's in Y)
     public void addMember(GymMember member) {
         members.add(member);
+        EventLog.getInstance().logEvent(new Event(
+                "Member " + member.getName() +
+                        "registered on" +member.getRegDate() +
+                        " with allowed missed days" + member.getAllowedMiss()
+                ));
     }
 
     // MODIFIES: this
@@ -74,5 +79,19 @@ public class MembersManager implements Writable {
         }
 
         return jsonArray;
+    }
+
+    public static void printLog(EventLog el)
+    //  throws LogException
+    {
+//        try {
+        for (Event next : el) {
+            System.out.println(next.toString());
+            System.out.println("\n\n");
+//            }
+//        } catch (LogException e) {
+//            throw new LogException("Cannot write to file");
+//        }
+        }
     }
 }

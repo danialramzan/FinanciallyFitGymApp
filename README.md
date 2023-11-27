@@ -26,3 +26,11 @@ This billing structure is suitable for anyone who like me, struggles to effectiv
 -  **As a user, I want to be able to be able to save the state and information of all of my Gym Members to a file.**
 
 -  **As a user, I want to be able to be able to load the state and information of all of my Gym Members from a pre-saved file so I dont have to reenter it every time I launch the program.**
+
+## Instructions for Grader
+
+-  **You can generate the first required action related to the user story "adding multiple Xs to a Y" by clicking register method and adding the details, then clicking okay
+- **You can generate the second required action related to the user story "adding multiple Xs to a Y" by checking check attendance by date on the main menu, this tells you a list of everyone who attended on a certain day (filter).
+- **You can locate my visual component when the app opens, there is a splash screen, and every subsequent panel in the app contains the logo.
+- **You can save the state of my application by clicking the save button
+- **You can reload the state of my application by clicking the load button
