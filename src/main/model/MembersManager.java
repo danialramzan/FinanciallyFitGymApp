@@ -32,9 +32,9 @@ public class MembersManager implements Writable {
     public void addMember(GymMember member) {
         members.add(member);
         EventLog.getInstance().logEvent(new Event(
-                "Member " + member.getName() +
-                        "registered on" +member.getRegDate() +
-                        " with allowed missed days" + member.getAllowedMiss()
+                "★★EVENT★★ Member: " + member.getName() +
+                        " registered on " + member.getRegDate() +
+                        " with allowed missed days: " + member.getAllowedMiss()
                 ));
     }
 
@@ -53,13 +53,50 @@ public class MembersManager implements Writable {
     // REQUIRES: date input needs to be a String and follow YYYY-MM-DD format
     // EFFECTS: returns a list of all patrons who attended the gym on a certain date.
     public List<String> returnAttendanceDay(String date) {
+        String eventLogString = "★★EVENT★★ The attendance record for " + date +
+                " was requested, the members who attended are: ";
         List<String> memberlist = new ArrayList<>();
         for (GymMember m : members) {
             if (m.getAttendanceLog().containsKey(date)) {
                 memberlist.add(m.getName());
+
             }
         }
+        if (memberlist.size() > 0) {
+                for (String m : memberlist) {
+                    eventLogString = eventLogString + "⦿" + m;
+                }
+            } else {
+            eventLogString = eventLogString + "Nobody!";
+        }
+        EventLog.getInstance().logEvent(new Event(eventLogString));
         return memberlist;
+    }
+
+//    // Logs Attendance
+//    // REQUIRES: - logDate should be in format YYYY-MM-DD
+//    //           - logDate should be on, or after regDate
+//    //           - logDate should be in the same month and year as regDate
+//    //           =  hours >= 0
+//    // MODIFIES: this
+//    // EFFECTS: logs the attendance of the user for a date
+//    // - If the date is already populated, it is replaced by the new entry
+//    // - If not, a new entry is created and the attendance count is incremented by 1
+//    public void logAttendance(double hours, String logDate, GymMember member) {
+//        if (member.getAttendanceLog().containsKey(String.valueOf(logDate))) {
+//            member.getAttendanceLog().put(String.valueOf(logDate), hours);
+//            EventLog.getInstance().logEvent(new Event(
+//                    "★★EVENT★★ Attendance was just updated for member: " + member.getName() +
+//                            ": " + hours + " hours logged on "+ logDate));
+//        } else {
+//            member.getAttendanceLog().put(String.valueOf(logDate), hours);
+//            attendanceCount++;
+//            EventLog.getInstance().logEvent(new Event(
+//                    "★★EVENT★★ Attendance was just logged for member " + getName() +
+//                            ": " + hours + " hours logged on "+ logDate + ", changing number of days attended to "
+//                            + getAttendanceCount()));
+//
+//        }
     }
 
     // EFFECTS: puts the JSONArray of list of GymMembers into a JSONObject
@@ -81,17 +118,4 @@ public class MembersManager implements Writable {
         return jsonArray;
     }
 
-    public static void printLog(EventLog el)
-    //  throws LogException
-    {
-//        try {
-        for (Event next : el) {
-            System.out.println(next.toString());
-            System.out.println("\n\n");
-//            }
-//        } catch (LogException e) {
-//            throw new LogException("Cannot write to file");
-//        }
-        }
-    }
 }

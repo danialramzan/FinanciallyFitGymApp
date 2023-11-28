@@ -16,6 +16,7 @@ import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 
 // Imports from console UI
 import model.Event;
@@ -49,14 +50,22 @@ public class FinanciallyFitGUI extends JFrame  {
     public FinanciallyFitGUI() throws InterruptedException, FileNotFoundException {
         super("FinanciallyFit");
         setIconImage(logo.getImage());
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                initializeExit();
+            }
+        });
+
 
         jsonWriter = new JsonWriter(JSON_FILEPATH);
         jsonReader = new JsonReader(JSON_FILEPATH);
 
         // Splash screen
-        showSplashScreen(3600);
-        Thread.sleep(3600);
+//        showSplashScreen(3600);
+//        Thread.sleep(3600);
 
 
         // Go fullscreen
@@ -766,13 +775,18 @@ public class FinanciallyFitGUI extends JFrame  {
         } catch (InterruptedException ex) {
             throw new RuntimeException(ex);
         }
-        System.exit(0);
         printLog(EventLog.getInstance());
-        //lp.printLog(EventLog.getInstance())
+        System.exit(0);
     }
 
-    private static void printLog(EventLog el) {
-        MembersManager.printLog(el);
+    //    private static void printLog(EventLog el) {
+//        MembersManager.printLog(el);
+//    }
+    public static void printLog(EventLog el) {
+        for (Event next : el) {
+            System.out.println(next.toString());
+            System.out.println("\n");
+        }
     }
 
 
@@ -853,4 +867,6 @@ public class FinanciallyFitGUI extends JFrame  {
         timerList.add(randomValue2);
         return timerList;
     }
+
+
 }
