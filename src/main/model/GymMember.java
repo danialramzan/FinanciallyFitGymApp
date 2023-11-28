@@ -76,9 +76,17 @@ public class GymMember implements Writable {
     public void logAttendance(double hours, String logDate) {
         if (attendanceLog.containsKey(String.valueOf(logDate))) {
             attendanceLog.put(String.valueOf(logDate), hours);
+            EventLog.getInstance().logEvent(new Event(
+                    "★★EVENT★★ Attendance was just updated for member: " + getName() +
+                            ": " + hours + " hours logged on "+ logDate));
         } else {
             attendanceLog.put(String.valueOf(logDate), hours);
             attendanceCount++;
+            EventLog.getInstance().logEvent(new Event(
+                    "★★EVENT★★ Attendance was just logged for member " + getName() +
+                            ": " + hours + " hours logged on "+ logDate + ", changing number of days attended to "
+                            + getAttendanceCount()));
+
         }
     }
 
@@ -109,6 +117,11 @@ public class GymMember implements Writable {
     // EFFECTS: returns the number of days the user has logged their attendance
     public int getAttendanceCount() {
         return attendanceCount;
+    }
+
+    // EFFECTS: updates the number of days the user has logged their attendance
+    public void setAttendanceCount(int attendanceCount) {
+        this.attendanceCount = attendanceCount;
     }
 
     // EFFECTS: returns the number of days the user is allowed to miss their attendance

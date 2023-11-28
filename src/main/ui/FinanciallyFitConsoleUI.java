@@ -1,5 +1,6 @@
 package ui;
 
+import model.EventLog;
 import model.FinanciallyFitModel;
 import model.GymMember;
 import model.MembersManager;
@@ -9,6 +10,8 @@ import persistence.JsonWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+
+import static ui.FinanciallyFitGUI.printLog;
 
 
 /*
@@ -130,6 +133,7 @@ public class FinanciallyFitConsoleUI {
     // EFFECTS: Exits the Program
     private void exit() {
         System.out.println("Exiting the FinanciallyFit terminal. Goodbye!");
+        printLog(EventLog.getInstance());
         System.exit(0);
     }
 
@@ -192,7 +196,7 @@ public class FinanciallyFitConsoleUI {
         if (foundMember != null) {
             System.out.print("Enter time spent at the gym (hours): ");
             double hours = scanner.nextDouble();
-            foundMember.logAttendance(hours, logDate);
+            membersManager.logAttendance(hours, logDate, foundMember);
             System.out.println(hours + " hours logged for " + memberName);
         } else {
             System.out.println("Member not found.");

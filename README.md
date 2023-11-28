@@ -29,8 +29,49 @@ This billing structure is suitable for anyone who like me, struggles to effectiv
 
 ## Instructions for Grader
 
--  **You can generate the first required action related to the user story "adding multiple Xs to a Y" by clicking register method and adding the details, then clicking okay**
+-  **You can generate the first required action related to the user story "adding multiple Xs to a Y" by clicking register method and adding the details, then clicking okay.**
 - **You can generate the second required action related to the user story "adding multiple Xs to a Y" by checking check attendance by date on the main menu, this tells you a list of everyone who attended on a certain day (filter).**
 - **You can locate my visual component when the app opens, there is a splash screen, and every subsequent panel in the app contains the logo.**
-- **You can save the state of my application by clicking the save button**
-- **You can reload the state of my application by clicking the load button**
+- **You can save the state of my application by clicking the save button.**
+- **You can reload the state of my application by clicking the load button.**
+
+## Phase 4: Task 2 (sample of EventLog output upon system exit):
+
+<pre>
+Mon Nov 27 23:56:46 PST 2023
+★★EVENT★★ Member: Danial Ramzan registered on 2023-11-17 with allowed missed days: 2
+
+
+Mon Nov 27 23:56:54 PST 2023
+★★EVENT★★ Attendance was just logged for member Danial Ramzan: 3.0 hours logged on 2023-11-18, changing number of days attended to 1
+
+
+Mon Nov 27 23:57:04 PST 2023
+★★EVENT★★ Attendance was just logged for member Danial Ramzan: 4.0 hours logged on 2023-11-19, changing number of days attended to 2
+
+
+Mon Nov 27 23:57:15 PST 2023
+★★EVENT★★ Member: Paul Carter registered on 2023-11-18 with allowed missed days: 4
+
+
+Mon Nov 27 23:57:23 PST 2023
+★★EVENT★★ The attendance record for 2023-11-17 was requested, the members who attended are: Nobody!
+
+
+Mon Nov 27 23:57:31 PST 2023
+★★EVENT★★ The attendance record for 2023-11-18 was requested, the members who attended are: ⦿Danial Ramzan
+
+
+Mon Nov 27 23:58:03 PST 2023
+★★EVENT★★ The attendance record for 2023-11-19 was requested, the members who attended are: ⦿Danial Ramzan
+
+
+Mon Nov 27 23:58:34 PST 2023
+★★EVENT★★ Attendance was just logged for member Paul Carter: 4.5 hours logged on 2023-11-19, changing number of days attended to 1
+
+
+Mon Nov 27 23:58:57 PST 2023
+★★EVENT★★ The attendance record for 2023-11-19 was requested, the members who attended are: ⦿Danial Ramzan ⦿Paul Carter
+
+</pre>
+
