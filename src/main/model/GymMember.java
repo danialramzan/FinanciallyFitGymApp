@@ -119,6 +119,11 @@ public class GymMember implements Writable {
         return attendanceCount;
     }
 
+    // EFFECTS: updates the number of days the user has logged their attendance
+    public void setAttendanceCount(int attendanceCount) {
+        this.attendanceCount = attendanceCount;
+    }
+
     // EFFECTS: returns the number of days the user is allowed to miss their attendance
     public int getAllowedMiss() {
         return allowedMiss;

@@ -562,7 +562,8 @@ public class FinanciallyFitGUI extends JFrame  {
                 financiallyFitModel.findGymMemberPublic(membersManager.getMembers(),textBoxName.getText());
 
         if (foundMember != null) {
-            foundMember.logAttendance(Double.parseDouble(textBoxHours.getText()), textBoxLogDate.getText());
+            membersManager.logAttendance(
+                    Double.parseDouble(textBoxHours.getText()), textBoxLogDate.getText(), foundMember);
 
             returnstring = textBoxHours.getText() + " hours logged for "
                     + textBoxName.getText() + " on " + textBoxLogDate.getText();

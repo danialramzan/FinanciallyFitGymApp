@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 public class Main {
     public static void main(String[] args) {
         try {
-            // new FinanciallyFitConsoleUI();  //swap commented out code to choose between console ui and gui.
+           // new FinanciallyFitConsoleUI();  //swap commented out code to choose between console ui and gui.
             new FinanciallyFitGUI();  // <-------|
         } catch (FileNotFoundException e) {
             System.out.println("Unable to run application: file not found");

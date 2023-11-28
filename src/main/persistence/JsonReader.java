@@ -1,6 +1,8 @@
 package persistence;
 
 
+import model.Event;
+import model.EventLog;
 import model.GymMember;
 import model.MembersManager;
 import org.json.JSONArray;
@@ -74,15 +76,19 @@ public class JsonReader {
         JSONObject attendanceLogJsonObject = jsonObject.getJSONObject("attendanceLog");
         Map<String, Double> attendanceLog = new HashMap<>();
 
-        for (String key : attendanceLogJsonObject.keySet()) {
-            attendanceLog.put(key, attendanceLogJsonObject.getDouble(key));
-        }
-        
-        GymMember gymMember = 
+        GymMember gymMember =
                 new GymMember(numOfDaysLeftInMonth, username, baseMembershipCost,
                         dailyPenalty, allowedMiss, attendanceCount, attendanceLog);
 
         mm.addMember(gymMember);
+
+        for (String key : attendanceLogJsonObject.keySet()) {
+            attendanceLog.put(key, attendanceLogJsonObject.getDouble(key));
+            EventLog.getInstance().logEvent(new Event(
+                    "★★EVENT★★ Attendance was loaded in for member: " +
+                            username.substring(0, username.length() - 11) +
+                            ": " + attendanceLogJsonObject.getDouble(key) + " hours logged on "+ key));
+        }
     }
 }
         
