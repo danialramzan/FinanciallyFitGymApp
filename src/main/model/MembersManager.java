@@ -95,6 +95,7 @@ public class MembersManager implements Writable {
                     "★★EVENT★★ Attendance was just logged for member " + member.getName() +
                             ": " + hours + " hours logged on "+ logDate + ", changing number of days attended to "
                             + member.getAttendanceCount()));
+            
 
         }
     }
