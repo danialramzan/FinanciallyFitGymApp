@@ -5,6 +5,7 @@ import persistence.Writable;
 
 import java.util.*;
 import java.time.LocalDate;
+
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 
 /*
@@ -23,7 +24,6 @@ public class GymMember implements Writable {
     private static final int DAILY_PENALTY = 15;
 
 
-
     // Constructs the GymMember Object (X)
     // REQUIRES: - allowedMiss <= numOfDaysLeftInMonth
     //           - regDate MUST be in format YYYY-MM-DD
@@ -39,7 +39,7 @@ public class GymMember implements Writable {
                 - registrationDate.getDayOfMonth() + 1);
         this.username = (name + "_" + registrationDate);
         this.baseMembershipCost = numOfDaysLeftInMonth * DAILY_FEE_MULTIPLIER;
-        this.dailyPenalty =  DAILY_PENALTY;
+        this.dailyPenalty = DAILY_PENALTY;
         this.allowedMiss = allowedMiss;
         this.attendanceCount = 0;
         this.attendanceLog = new HashMap<>();
@@ -57,7 +57,7 @@ public class GymMember implements Writable {
         this.numOfDaysLeftInMonth = numOfDaysLeftInMonth;
         this.username = username;
         this.baseMembershipCost = baseMembershipCost;
-        this.dailyPenalty =  dailyPenalty;
+        this.dailyPenalty = dailyPenalty;
         this.allowedMiss = allowedMiss;
         this.attendanceCount = attendanceCount;
         this.attendanceLog = attendanceLog;
@@ -77,14 +77,14 @@ public class GymMember implements Writable {
         if (attendanceLog.containsKey(String.valueOf(logDate))) {
             attendanceLog.put(String.valueOf(logDate), hours);
             EventLog.getInstance().logEvent(new Event(
-                    "**EVENT** Attendance was just updated for member: " + getName() +
-                            ": " + hours + " hours logged on "+ logDate));
+                    "**EVENT** Attendance was just updated for member: " + getName()
+                            + ": " + hours + " hours logged on " + logDate));
         } else {
             attendanceLog.put(String.valueOf(logDate), hours);
             attendanceCount++;
             EventLog.getInstance().logEvent(new Event(
-                    "**EVENT** Attendance was just logged for member " + getName() +
-                            ": " + hours + " hours logged on "+ logDate + ", changing number of days attended to "
+                    "**EVENT** Attendance was just logged for member " + getName()
+                            + ": " + hours + " hours logged on " + logDate + ", changing number of days attended to "
                             + getAttendanceCount()));
 
         }
@@ -96,7 +96,7 @@ public class GymMember implements Writable {
         if (attendanceCount >= (numOfDaysLeftInMonth - allowedMiss)) {
             return baseMembershipCost;
         } else {
-            return baseMembershipCost + (dailyPenalty * ((numOfDaysLeftInMonth - attendanceCount)  - allowedMiss));
+            return baseMembershipCost + (dailyPenalty * ((numOfDaysLeftInMonth - attendanceCount) - allowedMiss));
         }
 
     }

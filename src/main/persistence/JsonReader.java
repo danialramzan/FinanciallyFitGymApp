@@ -85,9 +85,9 @@ public class JsonReader {
         for (String key : attendanceLogJsonObject.keySet()) {
             attendanceLog.put(key, attendanceLogJsonObject.getDouble(key));
             EventLog.getInstance().logEvent(new Event(
-                    "**EVENT** Attendance was loaded in for member: " +
-                            username.substring(0, username.length() - 11) +
-                            ": " + attendanceLogJsonObject.getDouble(key) + " hours logged on "+ key));
+                    "**EVENT** Attendance was loaded in for member: "
+                            + username.substring(0, username.length() - 11)
+                            + ": " + attendanceLogJsonObject.getDouble(key) + " hours logged on " + key));
         }
     }
 }
