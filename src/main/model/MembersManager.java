@@ -32,7 +32,7 @@ public class MembersManager implements Writable {
     public void addMember(GymMember member) {
         members.add(member);
         EventLog.getInstance().logEvent(new Event(
-                "★★EVENT★★ Member: " + member.getName() +
+                "**EVENT** Member: " + member.getName() +
                         " registered on " + member.getRegDate() +
                         " with allowed missed days: " + member.getAllowedMiss()
                 ));
@@ -53,7 +53,7 @@ public class MembersManager implements Writable {
     // REQUIRES: date input needs to be a String and follow YYYY-MM-DD format
     // EFFECTS: returns a list of all patrons who attended the gym on a certain date.
     public List<String> returnAttendanceDay(String date) {
-        String eventLogString = "★★EVENT★★ The attendance record for " + date +
+        String eventLogString = "**EVENT** The attendance record for " + date +
                 " was requested, the members who attended are: ";
         List<String> memberList = new ArrayList<>();
         for (GymMember m : members) {
@@ -64,7 +64,7 @@ public class MembersManager implements Writable {
         }
         if (memberList.size() > 0) {
                 for (String m : memberList) {
-                    eventLogString = eventLogString + "⦿" + m;
+                    eventLogString = eventLogString + "+" + m;
                 }
             } else {
             eventLogString = eventLogString + "Nobody!";
@@ -86,13 +86,13 @@ public class MembersManager implements Writable {
         if (member.getAttendanceLog().containsKey(String.valueOf(logDate))) {
             member.getAttendanceLog().put(String.valueOf(logDate), hours);
             EventLog.getInstance().logEvent(new Event(
-                    "★★EVENT★★ Attendance was just updated for member: " + member.getName() +
+                    "**EVENT** Attendance was just updated for member: " + member.getName() +
                             ": " + hours + " hours logged on "+ logDate));
         } else {
             member.getAttendanceLog().put(String.valueOf(logDate), hours);
             member.setAttendanceCount(member.getAttendanceCount() + 1);
             EventLog.getInstance().logEvent(new Event(
-                    "★★EVENT★★ Attendance was just logged for member " + member.getName() +
+                    "**EVENT** Attendance was just logged for member " + member.getName() +
                             ": " + hours + " hours logged on "+ logDate + ", changing number of days attended to "
                             + member.getAttendanceCount()));
             

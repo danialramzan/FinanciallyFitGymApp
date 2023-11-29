@@ -1,4 +1,4 @@
-# FinanciallyFit.
+﻿# FinanciallyFit.
 
 ## Project Overview
 
@@ -39,39 +39,38 @@ This billing structure is suitable for anyone who like me, struggles to effectiv
 
 <pre>
 Mon Nov 27 23:56:46 PST 2023
-★★EVENT★★ Member: Danial Ramzan registered on 2023-11-17 with allowed missed days: 2
+**EVENT** Member: Danial Ramzan registered on 2023-11-17 with allowed missed days: 2
 
 
 Mon Nov 27 23:56:54 PST 2023
-★★EVENT★★ Attendance was just logged for member Danial Ramzan: 3.0 hours logged on 2023-11-18, changing number of days attended to 1
+**EVENT** Attendance was just logged for member Danial Ramzan: 3.0 hours logged on 2023-11-18, changing number of days attended to 1
 
 
 Mon Nov 27 23:57:04 PST 2023
-★★EVENT★★ Attendance was just logged for member Danial Ramzan: 4.0 hours logged on 2023-11-19, changing number of days attended to 2
+**EVENT** Attendance was just logged for member Danial Ramzan: 4.0 hours logged on 2023-11-19, changing number of days attended to 2
 
 
 Mon Nov 27 23:57:15 PST 2023
-★★EVENT★★ Member: Paul Carter registered on 2023-11-18 with allowed missed days: 4
+**EVENT** Member: Paul Carter registered on 2023-11-18 with allowed missed days: 4
 
 
 Mon Nov 27 23:57:23 PST 2023
-★★EVENT★★ The attendance record for 2023-11-17 was requested, the members who attended are: Nobody!
+**EVENT** The attendance record for 2023-11-17 was requested, the members who attended are: Nobody!
 
 
 Mon Nov 27 23:57:31 PST 2023
-★★EVENT★★ The attendance record for 2023-11-18 was requested, the members who attended are: ⦿Danial Ramzan
+**EVENT** The attendance record for 2023-11-18 was requested, the members who attended are: +Danial Ramzan
 
 
 Mon Nov 27 23:58:03 PST 2023
-★★EVENT★★ The attendance record for 2023-11-19 was requested, the members who attended are: ⦿Danial Ramzan
+**EVENT** The attendance record for 2023-11-19 was requested, the members who attended are: +Danial Ramzan
 
 
 Mon Nov 27 23:58:34 PST 2023
-★★EVENT★★ Attendance was just logged for member Paul Carter: 4.5 hours logged on 2023-11-19, changing number of days attended to 1
+**EVENT** Attendance was just logged for member Paul Carter: 4.5 hours logged on 2023-11-19, changing number of days attended to 1
 
 
 Mon Nov 27 23:58:57 PST 2023
-★★EVENT★★ The attendance record for 2023-11-19 was requested, the members who attended are: ⦿Danial Ramzan ⦿Paul Carter
+**EVENT** The attendance record for 2023-11-19 was requested, the members who attended are: +Danial Ramzan +Paul Carter
 
 </pre>
-
