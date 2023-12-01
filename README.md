@@ -74,3 +74,7 @@ Mon Nov 27 23:58:57 PST 2023
 **EVENT** The attendance record for 2023-11-19 was requested, the members who attended are: +Danial Ramzan +Paul Carter
 
 </pre>
+
+## Phase 4: Task 3 (opportunities for refactoring): 
+
+My prime candidate for refactoring would probably be my FinanciallyFitModel class; it was born out of a stage where I realised making all my methods public and static did not comply with the rubric, and I needed to rectify the situation by making public getter methods which could called by the UI. It is just a collection of code that can very easily be integrated into MembersManager, and removing it from my program entirely with all its methods put into MembersManager would probably be a good idea.
