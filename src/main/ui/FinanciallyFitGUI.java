@@ -64,8 +64,8 @@ public class FinanciallyFitGUI extends JFrame  {
         jsonReader = new JsonReader(JSON_FILEPATH);
 
         // Splash screen
-//        showSplashScreen(3600);
-//        Thread.sleep(3600);
+        showSplashScreen(3600);
+        Thread.sleep(3600);
 
 
         // Go fullscreen
